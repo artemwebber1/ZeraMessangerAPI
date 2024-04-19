@@ -1,4 +1,7 @@
 
+using SoftworkMessanger.Services.Repositories.Users;
+using SoftworkMessanger.Utilites;
+
 namespace SoftworkMessanger
 {
     public class Program
@@ -15,6 +18,18 @@ namespace SoftworkMessanger
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            #region Custom services
+
+            #region Scoped
+
+            builder.Services.AddScoped<SqlServerConnector>();
+
+            builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+
+            #endregion
+
+            #endregion
 
             #endregion
 
@@ -35,6 +50,7 @@ namespace SoftworkMessanger
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

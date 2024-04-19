@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SoftworkMessanger")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0db00a0661584f277d8a4c176da1d19d95082709")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d957c733b700a72ec57e01ff02f5d6e9fed46c03")]
 [assembly: System.Reflection.AssemblyProductAttribute("SoftworkMessanger")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SoftworkMessanger")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
