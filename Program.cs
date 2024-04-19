@@ -1,4 +1,5 @@
 
+using SoftworkMessanger.Services.Repositories.Chats;
 using SoftworkMessanger.Services.Repositories.Users;
 using SoftworkMessanger.Utilites;
 
@@ -26,6 +27,7 @@ namespace SoftworkMessanger
             builder.Services.AddScoped<SqlServerConnector>();
 
             builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+            builder.Services.AddScoped<IChatsRepository, ChatsRepository>();
 
             #endregion
 

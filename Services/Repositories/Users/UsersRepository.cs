@@ -12,19 +12,19 @@ namespace SoftworkMessanger.Services.Repositories.Users
         }
 
         /// <summary>
-        /// Подключатель к базе данных MS SQL Server.
+        /// Провайдер базы данных MS SQL Server.
         /// </summary>
         private readonly SqlServerConnector _sqlServerConnector;
 
         public User? GetById(int userId)
         {
-            User? user = GetUserCollectionFromSqlQueryAsync($@"SELECT * FROM Users WHERE Users.UserId = {userId}").Result?.First();
+            User? user = GetUsersListFromSqlQueryAsync($@"SELECT * FROM Users WHERE Users.UserId = {userId}").Result?.First();
             return user;
         }
 
         public User? GetByUserName(string userName)
         {
-            User? user = GetUserCollectionFromSqlQueryAsync(@$"SELECT * FROM Users WHERE Users.UserName = '{userName}'").Result?.First();
+            User? user = GetUsersListFromSqlQueryAsync(@$"SELECT * FROM Users WHERE Users.UserName = '{userName}'").Result?.First();
             return user;
         }
 
@@ -33,7 +33,7 @@ namespace SoftworkMessanger.Services.Repositories.Users
         /// </summary>
         /// <param name="sqlQuery">SQL-запрос.</param>
         /// <returns>Список пользователей, полученный из SQL-запроса.</returns>
-        private async Task<IEnumerable<User>?> GetUserCollectionFromSqlQueryAsync(string sqlQuery)
+        private async Task<IEnumerable<User>?> GetUsersListFromSqlQueryAsync(string sqlQuery)
         {
             // Установление подключения к базе данных
             using SqlConnection sqlConnection = await _sqlServerConnector.GetSqlConnectionAsync();
@@ -50,7 +50,7 @@ namespace SoftworkMessanger.Services.Repositories.Users
                 return null;
 
             // Получение списка пользователей из читателя данных SQL-запроса
-            IEnumerable<User> users = await GetUsersFromReaderAsync(reader);
+            IEnumerable<User> users = await GetUsersListFromReaderAsync(reader);
             return users;
         }
 
@@ -59,7 +59,7 @@ namespace SoftworkMessanger.Services.Repositories.Users
         /// </summary>
         /// <param name="dataReader">Читатель данных SQL-запроса.</param>
         /// <returns>Список пользователей, полученный из читателя данных SQL-запроса.</returns>
-        private static async Task<IEnumerable<User>> GetUsersFromReaderAsync(SqlDataReader dataReader)
+        private static async Task<IEnumerable<User>> GetUsersListFromReaderAsync(SqlDataReader dataReader)
         {
             // Здесь в качестве структуры данных
             // используется связанный список для быстрой вставки нового пользователя в результирующий список
@@ -96,6 +96,7 @@ namespace SoftworkMessanger.Services.Repositories.Users
             }
             catch
             {
+                // При ошибке чтения возвращаем null
                 return null;
             }
         }
