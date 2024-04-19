@@ -8,7 +8,7 @@ namespace SoftworkMessanger.Controllers
     public class ChatsController : ControllerBase
     {
         [HttpGet("{chatId:int}")]
-        public async Task<Chat> GetChatAsync(int chatId)
+        public Chat? GetChat(int chatId)
         {
             return null;
         }

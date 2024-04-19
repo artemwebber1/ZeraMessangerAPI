@@ -5,6 +5,9 @@ using SoftworkMessanger.Services.Repositories.Users;
 
 namespace SoftworkMessanger.Controllers
 {
+    /// <summary>
+    /// Контроллер пользователей.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -14,12 +17,26 @@ namespace SoftworkMessanger.Controllers
             _usersRepository = usersRepository;
         }
 
+        /// <summary>
+        /// Репозиторий пользователей для работы с соответствующей таблицей в базе данных.
+        /// </summary>
         private readonly IUsersRepository _usersRepository;
 
+        #region Actions
+
         [HttpGet("{userId:int}")]
-        public User GetUser(int userId)
+        public User? GetUser(int userId)
         {
             return _usersRepository.GetById(userId);
         }
+
+        [HttpGet("{userName}")]
+        public User? GetUser(string userName)
+        {
+            return _usersRepository.GetByUserName(userName);
+        }
+
+        #endregion
+        
     }
 }
