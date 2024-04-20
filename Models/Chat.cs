@@ -5,6 +5,11 @@
     /// </summary>
     public class Chat
     {
+        public Chat()
+        {
+            Messages = new List<Message>();
+        }
+
         /// <summary>
         /// Id чата.
         /// </summary>
@@ -13,16 +18,11 @@
         /// <summary>
         /// Название чата. Название может быть изменено в будущем.
         /// </summary>
-        public string? ChatName { get; set; }
+        public string ChatName { get; set; } = null!;
 
         /// <summary>
         /// Все сообщения в чате.
         /// </summary>
-        public IEnumerable<Message>? Messages { get; }
-
-        /// <summary>
-        /// Участники чата.
-        /// </summary>
-        public IEnumerable<User>? ChatMembers { get; }
+        public List<Message> Messages { get; }
     }
 }

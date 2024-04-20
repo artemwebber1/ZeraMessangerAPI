@@ -1,4 +1,6 @@
-﻿using SoftworkMessanger.Models;
+﻿using Microsoft.Data.SqlClient;
+using SoftworkMessanger.Models;
+using System.Data;
 
 namespace SoftworkMessanger.Services.Repositories.Users
 {
@@ -20,5 +22,12 @@ namespace SoftworkMessanger.Services.Repositories.Users
         /// <param name="userName">Имя пользователя, которогу нужно вернуть.</param>
         /// <returns>Пользователь с указанным <paramref name="userName"/>.</returns>
         User? GetByUserName(string userName);
+
+        /// <summary>
+        /// Получение одного пользователя из читателя данных SQL-запроса.
+        /// </summary>
+        /// <param name="dataReader">Читатель данных SQL-запроса.</param>
+        /// <returns>Пользователь, полученный из читателя даных SQL-запроса.</returns>
+        User GetUserFromReader(IDataReader dataReader);
     }
 }

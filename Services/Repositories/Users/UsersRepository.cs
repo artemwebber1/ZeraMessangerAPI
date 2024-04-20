@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using SoftworkMessanger.Models;
 using SoftworkMessanger.Utilites;
+using System.Data;
 
 namespace SoftworkMessanger.Services.Repositories.Users
 {
@@ -59,7 +60,7 @@ namespace SoftworkMessanger.Services.Repositories.Users
         /// </summary>
         /// <param name="dataReader">Читатель данных SQL-запроса.</param>
         /// <returns>Список пользователей, полученный из читателя данных SQL-запроса.</returns>
-        private static async Task<IEnumerable<User>> GetUsersListFromReaderAsync(SqlDataReader dataReader)
+        private async Task<IEnumerable<User>> GetUsersListFromReaderAsync(SqlDataReader dataReader)
         {
             // Здесь в качестве структуры данных
             // используется связанный список для быстрой вставки нового пользователя в результирующий список
@@ -75,12 +76,7 @@ namespace SoftworkMessanger.Services.Repositories.Users
             return users;
         }
 
-        /// <summary>
-        /// Получение одного пользователя из читателя данных SQL-запроса.
-        /// </summary>
-        /// <param name="dataReader">Читатель данных SQL-запроса.</param>
-        /// <returns>Пользователь, полученный из читателя даных SQL-запроса.</returns>
-        private static User? GetUserFromReader(SqlDataReader dataReader)
+        public User GetUserFromReader(IDataReader dataReader)
         {
             try
             {
@@ -97,7 +93,7 @@ namespace SoftworkMessanger.Services.Repositories.Users
             catch
             {
                 // При ошибке чтения возвращаем null
-                return null;
+                return null!;
             }
         }
     }

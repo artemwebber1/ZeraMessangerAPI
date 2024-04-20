@@ -8,21 +8,21 @@
         /// <summary>
         /// Id сообщения.
         /// </summary>
-        public int MessageId { get; }
+        public int MessageId { get; set; }
 
         /// <summary>
         /// Id автора сообщения.
         /// </summary>
-        public int AuthorId { get; }
+        public int AuthorId { get; set; }
 
         /// <summary>
         /// Текст сообщения.
         /// </summary>
-        public string? MessageText { get; set; }
+        public string MessageText { get; set; } = null!;
 
         /// <summary>
         /// Id чата, в котором находится сообщение.
         /// </summary>
-        public int ChatId { get; }
+        public int ChatId { get; set; }
     }
 }

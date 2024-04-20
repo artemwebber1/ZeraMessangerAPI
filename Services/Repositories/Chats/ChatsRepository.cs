@@ -1,14 +1,21 @@
 ﻿using Microsoft.Data.SqlClient;
+using SoftworkMessanger.Extensions;
 using SoftworkMessanger.Models;
+using SoftworkMessanger.Models.Dto;
+using SoftworkMessanger.Services.Repositories.Messages;
+using SoftworkMessanger.Services.Repositories.Users;
 using SoftworkMessanger.Utilites;
+using System.Data;
 
 namespace SoftworkMessanger.Services.Repositories.Chats
 {
     public class ChatsRepository : IChatsRepository
     {
-        public ChatsRepository(SqlServerConnector sqlServerConnector)
+        public ChatsRepository(SqlServerConnector sqlServerConnector, IUsersRepository usersRepository, IMessagesRepository messagesRepository)
         {
             _sqlServerConnector = sqlServerConnector;
+            _usersRepository = usersRepository;
+            _messagesRepository = messagesRepository;
         }
 
         /// <summary>
@@ -16,20 +23,46 @@ namespace SoftworkMessanger.Services.Repositories.Chats
         /// </summary>
         private readonly SqlServerConnector _sqlServerConnector;
 
-        public Chat? GetById(int chatId)
+        #region Repositories
+
+        /// <summary>
+        /// Репозиторий для работы с таблицей пользователей.
+        /// </summary>
+        private readonly IUsersRepository _usersRepository;
+
+        /// <summary>
+        /// Репозиторий для работы с таблицей сообщений.
+        /// </summary>
+        private readonly IMessagesRepository _messagesRepository;
+
+        #endregion
+
+        public IEnumerable<Chat>? GetById(int chatId)
         {
-            Chat? chat = GetChatsListFromSqlQuery($"SELECT * FROM Chats WHERE Chats.ChatId = {chatId}").Result?.First();
-            return chat;
+            return GetChatsListFromSqlQuery(
+                $"SELECT * FROM Chats LEFT JOIN Messages ON Messages.ChatId = Chats.ChatId WHERE Chats.ChatId = {chatId};")
+                .Result;
         }
 
-        public IEnumerable<Chat>? GetUserChats(int userId)
+        public IEnumerable<ChatFirstView>? GetUserChats(int userId)
         {
             IEnumerable<Chat>? chats = GetChatsListFromSqlQuery(
-                "SELECT *" +
-                " FROM Chats LEFT JOIN Users ON Users.UserId = Chats.ChatId" +
-                $" WHERE Users.UserId = {userId};").Result;
+                $"SELECT * " +
+                $"FROM UserChats " +
+                $"LEFT JOIN Chats ON Chats.ChatId = UserChats.ChatId " +
+                $"LEFT JOIN Messages ON Messages.ChatId = UserChats.ChatId " +
+                $"WHERE UserChats.UserId = {userId};")
+                .Result;
 
-            return chats;
+            // Конвертация обычных моделей чатов в DTO-модели
+            List<ChatFirstView>? chatFirstViews = new List<ChatFirstView>();
+            if (chats != null)
+            {
+                foreach (Chat chat in chats)
+                    chatFirstViews.Add(chat.ToChatFirstView());
+            }
+
+            return chatFirstViews;
         }
 
         /// <summary>
@@ -61,27 +94,29 @@ namespace SoftworkMessanger.Services.Repositories.Chats
         /// </summary>
         /// <param name="dataReader">Читатель данных SQL-запроса.</param>
         /// <returns>Набор чатов из читателя данных SQL-запроса.</returns>
-        private static async Task<IEnumerable<Chat>> GetChatsListFromReader(SqlDataReader dataReader)
+        private async Task<IEnumerable<Chat>> GetChatsListFromReader(SqlDataReader dataReader)
         {
-            // Связанный список нужен для быстрого добавления нового элемента в результирующий список.
-            LinkedList<Chat> chats = new LinkedList<Chat>();
+            List<Chat> chats = new List<Chat>();
 
             while (await dataReader.ReadAsync())
             {
-                Chat? chat = GetChatFromReader(dataReader);
-                if (chat != null)
-                    chats.AddLast(chat);
+                int chatId = (int)dataReader["ChatId"];
+
+                // Получаем чат из читателя данных и добавляем к нему построчно сообщения, которые в нём находятся
+                Chat? chat = chats.Find(c => c.ChatId == chatId)?.IncludeChatMessages(dataReader, _messagesRepository);
+                // Если чат с таким id попался впервые, создаём новый объект
+                if (chat == null)
+                {
+                    chat = GetChatFromReader(dataReader)?.IncludeChatMessages(dataReader, _messagesRepository);
+                    if (chat != null)
+                        chats.Add(chat);
+                }
             }
 
             return chats;
         }
 
-        /// <summary>
-        /// Получение конкретного чата из читателя данных SQL-запроса.
-        /// </summary>
-        /// <param name="dataReader">Читатель данных SQL-запроса.</param>
-        /// <returns>Объект класса <see cref="Chat"/>, прочитанный из читателя данных SQL-запроса.</returns>
-        private static Chat? GetChatFromReader(SqlDataReader dataReader)
+        public Chat GetChatFromReader(SqlDataReader dataReader)
         {
             try
             {
@@ -95,7 +130,7 @@ namespace SoftworkMessanger.Services.Repositories.Chats
             }
             catch
             {
-                return null;
+                return null!;
             }
         }
     }
