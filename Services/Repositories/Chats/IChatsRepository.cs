@@ -1,6 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
-using SoftworkMessanger.Models;
-using SoftworkMessanger.Models.Dto;
+﻿using SoftworkMessanger.Models;
+using SoftworkMessanger.Models.Dto.ChatDto;
+using System.Data;
 
 namespace SoftworkMessanger.Services.Repositories.Chats
 {
@@ -14,20 +14,56 @@ namespace SoftworkMessanger.Services.Repositories.Chats
         /// </summary>
         /// <param name="chatId">Id чата, который нужно вернуть.</param>
         /// <returns>Чат с указанным <paramref name="chatId"/>.</returns>
-        IEnumerable<Chat>? GetById(int chatId);
+        Task<IEnumerable<Chat>?> GetByIdAsync(int chatId);
 
         /// <summary>
         /// Получение чатов для конкретного пользователя.
         /// </summary>
         /// <param name="userId">Id пользователя, для которого нужно вернуть чаты.</param>
         /// <returns>Набор чатов для конкретного пользователя.</returns>
-        IEnumerable<ChatFirstView>? GetUserChats(int userId);
+        Task<IEnumerable<ChatFirstView>> GetUserChatsAsync(int userId);
 
         /// <summary>
         /// Получение конкретного чата из читателя данных SQL-запроса.
         /// </summary>
         /// <param name="dataReader">Читатель данных SQL-запроса.</param>
         /// <returns>Объект класса <see cref="Chat"/>, прочитанный из читателя данных SQL-запроса.</returns>
-        Chat GetChatFromReader(SqlDataReader dataReader);
+        Chat GetChatFromReader(IDataReader dataReader);
+
+        /// <summary>
+        /// Добавление нового чата в базу данных.
+        /// </summary>
+        /// <param name="chatName">Имя нового чата.</param>
+        Task CreateChatAsync(NewChatData newChatData);
+
+        /// <summary>
+        /// Добавление пользователя в чат.
+        /// </summary>
+        /// <param name="userId">Id пользователя, которого нужно добавить в чат.</param>
+        /// <param name="chatId">Id чата, куда надо добавить пльзователя.</param>
+        Task AddUserToChatAsync(int userId, int chatId);
+
+        /// <summary>
+        /// Удаляет пользователя из чата.
+        /// </summary>
+        /// <param name="userId">Id пользователя, который будет удалён из чата.</param>
+        /// <param name="chatId">Id чата, из которого пользователь будет удалён.</param>
+        Task DeleteUserFromChatAsync(int userId, int chatId);
+
+        /// <summary>
+        /// Проверяет, содержится ли пользователь в конкретном чате.
+        /// </summary>
+        /// <param name="userId">Id пользователя.</param>
+        /// <param name="chatId">Id чата.</param>
+        /// <returns>True если пользователь является участником чата, иначе false.</returns>
+        Task<bool> IsChatContainsMember(int userId, int chatId);
+
+        /// <summary>
+        /// Проверяет, является ли пользователь админом в выбранном чате.
+        /// </summary>
+        /// <param name="userId">Id пользователя, которого нужно проверить.</param>
+        /// <param name="chatId">Id чата, в котором нужно проверить пользователя.</param>
+        /// <returns>True если пользователь чата является админом, иначе false.</returns>
+        Task<bool> IsAdmin(int userId, int chatId);
     }
 }

@@ -3,7 +3,7 @@
     /// <summary>
     /// Модель пользователя приложения.
     /// </summary>
-    public class User
+    public record User
     {
         /// <summary>
         /// Id пользователя.

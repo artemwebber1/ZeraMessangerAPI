@@ -3,7 +3,7 @@
     /// <summary>
     /// Модель сообщения, которое пользователь отправляет в какой-либо чат.
     /// </summary>
-    public class Message
+    public record Message
     {
         /// <summary>
         /// Id сообщения.

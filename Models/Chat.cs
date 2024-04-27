@@ -3,7 +3,7 @@
     /// <summary>
     /// Модель чата приложения.
     /// </summary>
-    public class Chat
+    public record Chat
     {
         public Chat()
         {

@@ -1,18 +1,14 @@
-﻿using Microsoft.Data.SqlClient;
-using SoftworkMessanger.Models;
+﻿using SoftworkMessanger.Models;
+using SoftworkMessanger.Models.Dto.MessageDto;
 using SoftworkMessanger.Utilites;
 using System.Data;
 
 namespace SoftworkMessanger.Services.Repositories.Messages
 {
-    public class MessagesRepository : IMessagesRepository
+    public class MessagesRepository : RepositoryBase, IMessagesRepository
     {
-        public MessagesRepository(SqlServerConnector sqlServerConnector)
-        {
-            _sqlServerConnector = sqlServerConnector;
-        }
+        public MessagesRepository(SqlServerConnector sqlServerConnector) : base(sqlServerConnector) { }
 
-        private readonly SqlServerConnector _sqlServerConnector;
 
         public Message GetMessageFromReader(IDataReader dataReader)
         {
@@ -30,23 +26,16 @@ namespace SoftworkMessanger.Services.Repositories.Messages
             }
             catch
             {
+                // При ошибке чтения вместо сообщения вернётся null
                 return null!;
             }
         }
 
-        public void AddMessage(string messageText, int authorId, int chatId)
+        public async Task AddMessageAsync(NewMessageData newMessageData)
         {
-            ExecuteNonQueryAsync($"INSERT INTO Messages(MessageText, AuthorId, ChatId) VALUES ('{messageText}', {authorId}, {chatId});");
-        }
-
-        private async void ExecuteNonQueryAsync(string sqlQuery)
-        {
-            using SqlConnection sqlConnection = await _sqlServerConnector.GetSqlConnectionAsync();
-
-            using SqlCommand sqlCommand = sqlConnection.CreateCommand();
-            sqlCommand.CommandText = sqlQuery;
-
-            await sqlCommand.ExecuteNonQueryAsync();
+            await ExecuteNonQueryAsync(
+                @$"INSERT INTO Messages(MessageText, AuthorId, ChatId) 
+                   VALUES ('{newMessageData.MessageText}', {newMessageData.AuthorId}, {newMessageData.ChatId});");
         }
     }
 }

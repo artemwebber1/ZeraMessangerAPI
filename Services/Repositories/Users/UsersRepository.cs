@@ -5,17 +5,11 @@ using System.Data;
 
 namespace SoftworkMessanger.Services.Repositories.Users
 {
-    public class UsersRepository : IUsersRepository
+    public class UsersRepository : RepositoryBase, IUsersRepository
     {
-        public UsersRepository(SqlServerConnector sqlServerConnector)
-        {
-            _sqlServerConnector = sqlServerConnector;
-        }
+        public UsersRepository(SqlServerConnector sqlServerConnector) : base(sqlServerConnector) { }
 
-        /// <summary>
-        /// Провайдер базы данных MS SQL Server.
-        /// </summary>
-        private readonly SqlServerConnector _sqlServerConnector;
+        #region IUsersRepository implementation
 
         public User? GetById(int userId)
         {
@@ -29,6 +23,30 @@ namespace SoftworkMessanger.Services.Repositories.Users
             return user;
         }
 
+        public User GetUserFromReader(IDataReader dataReader)
+        {
+            try
+            {
+                User user = new User
+                {
+                    UserId = (int)dataReader["UserID"],
+                    UserName = (string)dataReader["UserName"],
+                    UserHashedPassword = (string)dataReader["UserPassword"],
+                    UserEmail = (string)dataReader["UserEmail"]
+                };
+
+                return user;
+            }
+            catch
+            {
+                // При ошибке чтения возвращаем null
+                return null!;
+            }
+        }
+
+        #endregion
+
+        
         /// <summary>
         /// Получение списка пользователей из SQL-запроса.
         /// </summary>
@@ -36,8 +54,7 @@ namespace SoftworkMessanger.Services.Repositories.Users
         /// <returns>Список пользователей, полученный из SQL-запроса.</returns>
         private async Task<IEnumerable<User>?> GetUsersListFromSqlQueryAsync(string sqlQuery)
         {
-            // Установление подключения к базе данных
-            using SqlConnection sqlConnection = await _sqlServerConnector.GetSqlConnectionAsync();
+            using SqlConnection sqlConnection = await sqlServer.GetSqlConnectionAsync();
 
             // Создание команды на основе SQL-запроса
             using SqlCommand sqlCommand = sqlConnection.CreateCommand();
@@ -74,27 +91,6 @@ namespace SoftworkMessanger.Services.Repositories.Users
             }
 
             return users;
-        }
-
-        public User GetUserFromReader(IDataReader dataReader)
-        {
-            try
-            {
-                User user = new User
-                {
-                    UserId = (int)dataReader["UserID"],
-                    UserName = (string)dataReader["UserName"],
-                    UserHashedPassword = (string)dataReader["UserPassword"],
-                    UserEmail = (string)dataReader["UserEmail"]
-                };
-
-                return user;
-            }
-            catch
-            {
-                // При ошибке чтения возвращаем null
-                return null!;
-            }
         }
     }
 }

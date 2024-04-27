@@ -11,6 +11,16 @@ namespace SoftworkMessanger.Utilites
 
         private readonly string? _connectionString;
 
+        public SqlConnection OpenedSqlConnection
+        {
+            get
+            {
+                SqlConnection sqlConnection = new SqlConnection(_connectionString);
+                sqlConnection.Open();
+                return sqlConnection;
+            }
+        }
+
         public async Task<SqlConnection> GetSqlConnectionAsync()
         {
             SqlConnection sqlConnection = new SqlConnection(_connectionString);
