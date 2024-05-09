@@ -23,10 +23,14 @@ namespace SoftworkMessanger.Services.Repositories.Chats
 
         #region IChatsRepository implementation
 
-        public async Task<IEnumerable<Chat>?> GetByIdAsync(int chatId)
+        public async Task<Chat?> GetByIdAsync(int chatId)
         {
-            return await GetChatsListFromSqlQuery(
-                $"SELECT * FROM Chats LEFT JOIN Messages ON Messages.ChatId = Chats.ChatId WHERE Chats.ChatId = {chatId};");
+            return (await GetChatsListFromSqlQuery(
+                $@"SELECT *
+                   FROM Chats
+                   LEFT JOIN Messages ON Messages.ChatId = Chats.ChatId 
+                   WHERE Chats.ChatId = {chatId};"))
+                   ?.First();
         }
 
         public async Task<IEnumerable<ChatFirstView>> GetUserChatsAsync(int userId)
@@ -49,25 +53,29 @@ namespace SoftworkMessanger.Services.Repositories.Chats
             return chatFirstViews;
         }
 
-        public Chat GetChatFromReader(IDataReader dataReader)
+        public async Task<Chat?> GetChatFromReader(IDataReader dataReader)
         {
             try
             {
-                Chat chat = new Chat
-                {
-                    ChatId = (int)dataReader["ChatId"],
-                    ChatName = (string)dataReader["ChatName"]
-                };
+                int chatId = (int)dataReader["ChatId"];
+                string chatName = (string)dataReader["ChatName"];
+                int membersCount = await GetChatMembersCount(chatId);
+
+                Chat chat = new Chat(
+                    chatId, 
+                    chatName,
+                    membersCount);
 
                 return chat;
             }
             catch
             {
+                // При ошибке чтения данных возвращаем null
                 return null!;
             }
         }
 
-        public async Task CreateChatAsync(NewChatData newChatData)
+        public async Task CreateChatAsync(string chatName, int creatorId)
         {
             await ExecuteNonQueryAsync(
                 @$"DECLARE @NewChatIdTable TABLE(Id INT);
@@ -75,11 +83,11 @@ namespace SoftworkMessanger.Services.Repositories.Chats
 
                    INSERT INTO Chats(ChatName) 
                    OUTPUT INSERTED.ChatId INTO @NewChatIdTable(Id)
-                   VALUES ('{newChatData.ChatName}')
+                   VALUES ('{chatName}')
 
                    SELECT @NewChatId = Id FROM @NewChatIdTable
 
-                   INSERT INTO UserChats(UserId, ChatId, UserRole) VALUES({newChatData.ChatCreatorId}, @NewChatId, 'Admin');");
+                   INSERT INTO UserChats(UserId, ChatId, UserRole) VALUES({creatorId}, @NewChatId, 'Admin');");
         }
 
         public async Task AddUserToChatAsync(int userId, int chatId)
@@ -154,14 +162,18 @@ namespace SoftworkMessanger.Services.Repositories.Chats
                 int chatId = (int)dataReader["ChatId"];
 
                 // Получаем чат из читателя данных и добавляем к нему построчно сообщения, которые в нём находятся
-                Chat? chat = chats.Find(c => c.ChatId == chatId)?.AddChatMessage(dataReader, _messagesRepository);
-                // Если чат с таким id попался впервые, создаём новый объект
+                Chat? chat = chats.Find(c => c.ChatId == chatId);
+
+                // Если чат с таким id попался впервые, создаём новый объект класса Chat
                 if (chat == null)
                 {
-                    chat = GetChatFromReader(dataReader)?.AddChatMessage(dataReader, _messagesRepository);
+                    chat = await GetChatFromReader(dataReader);
                     if (chat != null)
                         chats.Add(chat);
                 }
+
+                Message chatMessage = _messagesRepository.GetMessageFromReader(dataReader);
+                chat?.IncludeMessage(dataReader, chatMessage);
             }
 
             return chats;
@@ -184,7 +196,8 @@ namespace SoftworkMessanger.Services.Repositories.Chats
         private async Task DeleteChatFromDataBase(int chatId)
         {
             await ExecuteNonQueryAsync(
-                    $@"DELETE FROM Chats WHERE Chats.ChatId = {chatId}; DELETE FROM Messages WHERE Messages.ChatId = {chatId};");
+                    $"DELETE FROM Messages WHERE Messages.ChatId = {chatId}; " + // Сначала удаляются все сообщения из чата
+                    $"DELETE FROM Chats WHERE Chats.ChatId = {chatId};");        // Затем удаляется сам чат
         }
     }
 }

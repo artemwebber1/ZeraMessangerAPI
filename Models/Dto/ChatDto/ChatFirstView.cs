@@ -6,7 +6,9 @@
     /// </summary>
     /// <param name="ChatId">Id чата.</param>
     /// <param name="ChatName">Имя чата.</param>
+    /// <param name="MembersCount">Количество участников чата.</param>
     public record ChatFirstView(
         int ChatId,
-        string ChatName);
+        string ChatName,
+        int MembersCount);
 }

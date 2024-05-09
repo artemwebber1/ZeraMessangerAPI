@@ -31,11 +31,11 @@ namespace SoftworkMessanger.Services.Repositories.Messages
             }
         }
 
-        public async Task AddMessageAsync(NewMessageData newMessageData)
+        public async Task AddMessageAsync(NewMessageData newMessageData, int authorId)
         {
             await ExecuteNonQueryAsync(
                 @$"INSERT INTO Messages(MessageText, AuthorId, ChatId) 
-                   VALUES ('{newMessageData.MessageText}', {newMessageData.AuthorId}, {newMessageData.ChatId});");
+                   VALUES ('{newMessageData.MessageText}', {authorId}, {newMessageData.ChatId});");
         }
     }
 }

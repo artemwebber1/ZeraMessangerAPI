@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "SQ726UQzo0MiwOy/RSIu7NeLUZ15AuZWi5FDOMaYK/E=",
+  "Hash": "9EvVTJZceSccU50jtBJwmNrCydW+a71twNJb12hTfOg=",
   "Source": "SoftworkMessanger",
   "BasePath": "_content/SoftworkMessanger",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "SoftworkMessanger\\wwwroot",
+      "Source": "SoftworkMessanger",
+      "ContentRoot": "D:\\projects\\CSharp\\Web\\SoftworkMessanger\\Backend\\SoftworkMessanger\\wwwroot\\",
+      "BasePath": "_content/SoftworkMessanger",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }

@@ -19,9 +19,8 @@ namespace SoftworkMessanger.Services.Repositories.Messages
         /// <summary>
         /// Добавление сообщения в чат.
         /// </summary>
-        /// <param name="messageAuthorId"></param>
-        /// <param name="chatId"></param>
-        /// <returns></returns>
-        Task AddMessageAsync(NewMessageData newMessageData);
+        /// <param name="newMessageData">Данные сообщения.</param>
+        /// <param name="authorId">Id автора сообщения.</param>
+        Task AddMessageAsync(NewMessageData newMessageData, int authorId);
     }
 }

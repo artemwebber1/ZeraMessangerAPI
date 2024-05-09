@@ -14,7 +14,7 @@ namespace SoftworkMessanger.Services.Repositories.Chats
         /// </summary>
         /// <param name="chatId">Id чата, который нужно вернуть.</param>
         /// <returns>Чат с указанным <paramref name="chatId"/>.</returns>
-        Task<IEnumerable<Chat>?> GetByIdAsync(int chatId);
+        Task<Chat?> GetByIdAsync(int chatId);
 
         /// <summary>
         /// Получение чатов для конкретного пользователя.
@@ -28,13 +28,14 @@ namespace SoftworkMessanger.Services.Repositories.Chats
         /// </summary>
         /// <param name="dataReader">Читатель данных SQL-запроса.</param>
         /// <returns>Объект класса <see cref="Chat"/>, прочитанный из читателя данных SQL-запроса.</returns>
-        Chat GetChatFromReader(IDataReader dataReader);
+        Task<Chat?> GetChatFromReader(IDataReader dataReader);
 
         /// <summary>
         /// Добавление нового чата в базу данных.
         /// </summary>
         /// <param name="chatName">Имя нового чата.</param>
-        Task CreateChatAsync(NewChatData newChatData);
+        /// <param name="creatorId">Id создателя чата.</param>
+        Task CreateChatAsync(string chatName, int creatorId);
 
         /// <summary>
         /// Добавление пользователя в чат.
