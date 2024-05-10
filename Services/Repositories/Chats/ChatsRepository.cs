@@ -25,12 +25,21 @@ namespace SoftworkMessanger.Services.Repositories.Chats
 
         public async Task<Chat?> GetByIdAsync(int chatId)
         {
-            return (await GetChatsListFromSqlQuery(
-                $@"SELECT *
-                   FROM Chats
-                   LEFT JOIN Messages ON Messages.ChatId = Chats.ChatId 
-                   WHERE Chats.ChatId = {chatId};"))
-                   ?.First();
+            IEnumerable<Chat>? chats = await GetChatsListFromSqlQuery(
+                $@" SELECT 
+	                    Chats.ChatId, 
+	                    Chats.ChatName, 
+	                    Messages.MessageId,
+	                    Messages.AuthorId,
+                        Messages.MessageText,
+                        Messages.ChatId,
+	                    Users.UserName
+                    FROM Chats
+                    LEFT JOIN Messages ON Messages.ChatId = Chats.ChatId
+                    LEFT JOIN Users ON Messages.AuthorId = Users.UserId
+                    WHERE Chats.ChatId = {chatId};");
+
+            return chats?.First();
         }
 
         public async Task<IEnumerable<ChatFirstView>> GetUserChatsAsync(int userId)
@@ -42,7 +51,7 @@ namespace SoftworkMessanger.Services.Repositories.Chats
                    LEFT JOIN Messages ON Messages.ChatId = UserChats.ChatId
                    WHERE UserChats.UserId = {userId};");
 
-            // Конвертация обычных моделей чатов в DTO-модели
+            // Конвертация моделей чатов в DTO-модели
             List<ChatFirstView>? chatFirstViews = new List<ChatFirstView>();
             if (chats != null)
             {
@@ -81,9 +90,9 @@ namespace SoftworkMessanger.Services.Repositories.Chats
                 @$"DECLARE @NewChatIdTable TABLE(Id INT);
                    DECLARE @NewChatId INT;
 
-                   INSERT INTO Chats(ChatName) 
+                   INSERT INTO Chats(ChatName, MembersCount) 
                    OUTPUT INSERTED.ChatId INTO @NewChatIdTable(Id)
-                   VALUES ('{chatName}')
+                   VALUES ('{chatName}', 1)
 
                    SELECT @NewChatId = Id FROM @NewChatIdTable
 
@@ -93,7 +102,7 @@ namespace SoftworkMessanger.Services.Repositories.Chats
         public async Task AddUserToChatAsync(int userId, int chatId)
         {
             await ExecuteNonQueryAsync(
-                $@"INSERT INTO UserChats(UserId, ChatId) VALUES({userId}, {chatId})");
+                $@" INSERT INTO UserChats(UserId, ChatId) VALUES({userId}, {chatId});");
         }
 
         public async Task DeleteUserFromChatAsync(int userId, int chatId)
@@ -112,17 +121,6 @@ namespace SoftworkMessanger.Services.Repositories.Chats
 
         public async Task<bool> IsChatContainsMember(int userId, int chatId)
             => await IsSqlQueryEmpty($@"SELECT * FROM UserChats WHERE UserChats.UserId = {userId} AND UserChats.ChatId = {chatId};");
-
-        public async Task<bool> IsAdmin(int userId, int chatId)
-        {
-            return await IsSqlQueryEmpty($@"
-                        SELECT UserChats.UserRole
-                        FROM UserChats
-                        WHERE
-                            UserChats.UserId = {userId} AND
-                            UserChats.ChatId = {chatId} AND
-                            UserChats.UserRole = 'Admin';");
-        }
 
         #endregion
 

@@ -6,6 +6,7 @@ using SoftworkMessanger.Models.Dto.MessageDto;
 using SoftworkMessanger.Services.Repositories.Chats;
 using SoftworkMessanger.Services.Repositories.Messages;
 using SoftworkMessanger.Services.Authentification.Jwt;
+using SoftworkMessanger.Services.Repositories.Users;
 
 namespace SoftworkMessanger.Controllers
 {
@@ -17,13 +18,15 @@ namespace SoftworkMessanger.Controllers
     [Authorize]
     public class ChatsController : ControllerBase
     {
-        public ChatsController(IChatsRepository chatsRepository, IMessagesRepository messagesRepository, IJwtDecoder jwtDecoder)
+        public ChatsController(IUsersRepository usersRepository, IChatsRepository chatsRepository, IMessagesRepository messagesRepository, IJwtDecoder jwtDecoder)
         {
+            _usersRepository = usersRepository;
             _chatsRepository = chatsRepository;
             _messagesRepository = messagesRepository;
             _jwtDecoder = jwtDecoder;
         }
 
+        private readonly IUsersRepository _usersRepository;
         private readonly IChatsRepository _chatsRepository;
         private readonly IMessagesRepository _messagesRepository;
         
@@ -46,14 +49,15 @@ namespace SoftworkMessanger.Controllers
         }
 
         [HttpPost("CreateChat")]
-        public async Task CreateChatAsync(string chatName)
+        public async Task<IResult> CreateChatAsync(string chatName)
         {
             int chatCreatorId = int.Parse(_jwtDecoder.GetClaimValue("UserId", Request));
             await _chatsRepository.CreateChatAsync(chatName, chatCreatorId);
+            return Results.Ok();
         }
 
         [HttpPost("AddUserToChat")]
-        public async Task AddUserToChatAsync(int userId, int chatId)
+        public async Task<IResult> AddUserToChatAsync(int userId, int chatId)
         {
             // Пользователь, которого пытаются добавить, уже состоит в чате?
             bool isUserInChat = await _chatsRepository.IsChatContainsMember(userId, chatId);
@@ -64,11 +68,11 @@ namespace SoftworkMessanger.Controllers
 
             if (isUserInChat || !isInviterInChat)
             {
-                Response.StatusCode = 400;
-                return;
+                return Results.Forbid();
             }
 
             await _chatsRepository.AddUserToChatAsync(userId, chatId);
+            return Results.Ok();
         }
 
         [HttpDelete("DeleteUserFromChat")]
@@ -87,8 +91,8 @@ namespace SoftworkMessanger.Controllers
 
             bool isChatContainsUser = await _chatsRepository.IsChatContainsMember(userId, chatId);
 
-            //  Пользователю, не являющемуся админом, запрещено исключать других пользователей.
-            bool isExcluderAdmin = await _chatsRepository.IsAdmin(excluderId, chatId);
+            //  Пользователю, не являющемуся админом, запрещено исключать других пользователей
+            bool isExcluderAdmin = await _usersRepository.IsAdmin(excluderId, chatId);
 
             if (!isChatContainsUser || (userId != excluderId && !isExcluderAdmin))
                 return Results.BadRequest($"Ошибка при исключении пользователя с id = {userId}.");
@@ -98,20 +102,17 @@ namespace SoftworkMessanger.Controllers
         }
 
         [HttpPost("AddMessage")]
-        public async Task AddMessage(NewMessageData newMessageData)
+        public async Task<IResult> AddMessage(NewMessageData newMessageData)
         {
             int messageAuthorId = int.Parse(_jwtDecoder.GetClaimValue("UserId", Request));
 
             //  Пользователь может отправлять сообщения только если он является участником чата
             bool isMessageAuthorInChat = await _chatsRepository.IsChatContainsMember(messageAuthorId, newMessageData.ChatId);
             if (!isMessageAuthorInChat)
-            {
-                Response.StatusCode = 403;
-                return;
-            }
-
-            //  В будущем id автора будет доставаться из JWT-токена, когда завезу авторизацию
+                return Results.Forbid();
+            
             await _messagesRepository.AddMessageAsync(newMessageData, messageAuthorId);
+            return Results.Ok();
         }
 
         #endregion

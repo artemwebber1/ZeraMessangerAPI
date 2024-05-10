@@ -14,13 +14,13 @@ namespace SoftworkMessanger.Services.Repositories.Messages
         {
             try
             {
-                Message message = new Message
-                {
-                    MessageId = (int)dataReader["MessageId"],
-                    MessageText = (string)dataReader["MessageText"],
-                    AuthorId = (int)dataReader["AuthorId"],
-                    ChatId = (int)dataReader["ChatId"]
-                };
+                int messageId = (int)dataReader["MessageId"];
+                int authorId = (int)dataReader["AuthorId"];
+                string authorName = (string)dataReader["UserName"];
+                string messageText = (string)dataReader["MessageText"];
+                int chatId = (int)dataReader["ChatId"];
+
+                Message message = new Message(messageId, authorId, authorName, messageText, chatId);
 
                 return message;
             }

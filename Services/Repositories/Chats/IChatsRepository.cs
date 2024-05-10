@@ -58,13 +58,5 @@ namespace SoftworkMessanger.Services.Repositories.Chats
         /// <param name="chatId">Id чата.</param>
         /// <returns>True если пользователь является участником чата, иначе false.</returns>
         Task<bool> IsChatContainsMember(int userId, int chatId);
-
-        /// <summary>
-        /// Проверяет, является ли пользователь админом в выбранном чате.
-        /// </summary>
-        /// <param name="userId">Id пользователя, которого нужно проверить.</param>
-        /// <param name="chatId">Id чата, в котором нужно проверить пользователя.</param>
-        /// <returns>True если пользователь чата является админом, иначе false.</returns>
-        Task<bool> IsAdmin(int userId, int chatId);
     }
 }

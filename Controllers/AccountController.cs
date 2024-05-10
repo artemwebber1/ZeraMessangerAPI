@@ -16,9 +16,9 @@ namespace SoftworkMessanger.Controllers
         private readonly IAuthentificationService _authentificationService;
 
         [HttpPost("SignUp")]
-        public async Task RegisterNewUser(UserRegistrationData userRegistrationData)
+        public async Task<IResult> RegisterNewUser(UserRegistrationData userRegistrationData)
         {
-            await _authentificationService.RegisterNewUserAsync(userRegistrationData);
+            return await _authentificationService.RegisterNewUserAsync(userRegistrationData);
         }
 
         [HttpPost("SignIn")]

@@ -55,9 +55,20 @@ namespace SoftworkMessanger.Services.Repositories.Users
             return await IsSqlQueryEmpty($@"SELECT * FROM Users WHERE Users.UserEmail = '{email}';");
         }
 
+        public async Task<bool> IsAdmin(int userId, int chatId)
+        {
+            return await IsSqlQueryEmpty($@"
+                        SELECT UserChats.UserRole
+                        FROM UserChats
+                        WHERE
+                            UserChats.UserId = {userId} AND
+                            UserChats.ChatId = {chatId} AND
+                            UserChats.UserRole = 'Admin';");
+        }
+
         #endregion
 
-        
+
         /// <summary>
         /// Получение списка пользователей из SQL-запроса.
         /// </summary>
