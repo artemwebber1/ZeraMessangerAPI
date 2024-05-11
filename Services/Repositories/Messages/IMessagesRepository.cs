@@ -14,14 +14,13 @@ namespace SoftworkMessanger.Services.Repositories.Messages
         /// </summary>
         /// <param name="dataReader">Читатель данных.</param>
         /// <returns>Объект класса <see cref="Message"/>, полученный из читателя данных.</returns>
-        Message GetMessageFromReader(IDataReader dataReader);
+        Message GetMessageFromReader(IDataReader dataReader, string authorIdColumn, string authorNameColumn, string messageTextColumn);
 
         /// <summary>
         /// Добавление сообщения в чат.
         /// </summary>
-        /// <param name="messageAuthorId"></param>
-        /// <param name="chatId"></param>
-        /// <returns></returns>
-        Task AddMessageAsync(NewMessageData newMessageData);
+        /// <param name="newMessageData">Данные сообщения.</param>
+        /// <param name="authorId">Id автора сообщения.</param>
+        Task AddMessageAsync(NewMessageData newMessageData, int authorId);
     }
 }

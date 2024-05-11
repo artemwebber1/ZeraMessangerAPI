@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SoftworkMessanger.Models;
+using SoftworkMessanger.Services.Authentification.Jwt;
 using SoftworkMessanger.Services.Repositories.Users;
 
 namespace SoftworkMessanger.Controllers
@@ -12,9 +13,10 @@ namespace SoftworkMessanger.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        public UsersController(IUsersRepository usersRepository)
+        public UsersController(IUsersRepository usersRepository, IJwtDecoder jwtDecoder)
         {
             _usersRepository = usersRepository;
+            _jwtDecoder = jwtDecoder;
         }
 
         /// <summary>
@@ -22,18 +24,22 @@ namespace SoftworkMessanger.Controllers
         /// </summary>
         private readonly IUsersRepository _usersRepository;
 
+        private readonly IJwtDecoder _jwtDecoder;
+
         #region Actions
 
         [HttpGet("{userId:int}")]
-        public User? GetUser(int userId)
+        public async Task<User?> GetUserAsync(int userId)
         {
-            return _usersRepository.GetById(userId);
+            return await _usersRepository.GetByIdAsync(userId);
         }
 
-        [HttpGet("{userName}")]
-        public User? GetUser(string userName)
+        [Authorize]
+        [HttpGet("Identity")]
+        public async Task<User?> GetIdentityAsync()
         {
-            return _usersRepository.GetByUserName(userName);
+            int userId = int.Parse(_jwtDecoder.GetClaimValue("UserId", Request));
+            return await _usersRepository.GetByIdAsync(userId);
         }
 
         #endregion

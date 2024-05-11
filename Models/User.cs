@@ -5,24 +5,32 @@
     /// </summary>
     public record User
     {
+        public User(int userId, string userName, string hashedPassword, string email)
+        {
+            UserId = userId;
+            UserName = userName;
+            UserHashedPassword = hashedPassword;
+            UserEmail = email;
+        }
+
         /// <summary>
         /// Id пользователя.
         /// </summary>
-        public int UserId { get; set; }
+        public int UserId { get; }
 
         /// <summary>
         /// Имя пользователя.
         /// </summary>
-        public string? UserName { get; set; }
+        public string UserName { get; } = null!;
 
         /// <summary>
         /// Захэшированный пароль пользователя.
         /// </summary>
-        public string? UserHashedPassword { get; set; }
+        public string UserHashedPassword { get; } = null!;
 
         /// <summary>
         /// Эл. почта пользователя.
         /// </summary>
-        public string? UserEmail { get; set; }
+        public string UserEmail { get; } = null!;
     }
 }

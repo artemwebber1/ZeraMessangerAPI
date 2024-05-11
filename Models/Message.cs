@@ -5,10 +5,12 @@
     /// </summary>
     public record Message
     {
-        /// <summary>
-        /// Id сообщения.
-        /// </summary>
-        public int MessageId { get; set; }
+        public Message(int authorId, string authorName, string messageText)
+        {
+            AuthorId = authorId; 
+            AuthorName = authorName;
+            MessageText = messageText;
+        }
 
         /// <summary>
         /// Id автора сообщения.
@@ -16,13 +18,13 @@
         public int AuthorId { get; set; }
 
         /// <summary>
-        /// Текст сообщения.
+        /// Имя автора сообщения.
         /// </summary>
-        public string MessageText { get; set; } = null!;
+        public string AuthorName { get; set; }
 
         /// <summary>
-        /// Id чата, в котором находится сообщение.
+        /// Текст сообщения.
         /// </summary>
-        public int ChatId { get; set; }
+        public string MessageText { get; set; }
     }
 }

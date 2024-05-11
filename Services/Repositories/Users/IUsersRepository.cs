@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using SoftworkMessanger.Models;
+using SoftworkMessanger.Models.Dto.UserDto;
 using System.Data;
 
 namespace SoftworkMessanger.Services.Repositories.Users
@@ -14,14 +15,14 @@ namespace SoftworkMessanger.Services.Repositories.Users
         /// </summary>
         /// <param name="userId">Id пользователя, которого нужно вернуть.</param>
         /// <returns>Пользователь с указанным <paramref name="userId"/>.</returns>
-        User? GetById(int userId);
+        Task<User?> GetByIdAsync(int userId);
 
         /// <summary>
-        /// Получение конкретного пользователя по имени.
+        /// Получение конкретного пользователя по электронной почте.
         /// </summary>
-        /// <param name="userName">Имя пользователя, которогу нужно вернуть.</param>
-        /// <returns>Пользователь с указанным <paramref name="userName"/>.</returns>
-        User? GetByUserName(string userName);
+        /// <param name="email">Электронная почта пользователя, которого нужно вернуть.</param>
+        /// <returns>Пользователь с указанным <paramref name="email"/>.</returns>
+        Task<User?> GetByEmailAsync(string email);
 
         /// <summary>
         /// Получение одного пользователя из читателя данных SQL-запроса.
@@ -29,5 +30,28 @@ namespace SoftworkMessanger.Services.Repositories.Users
         /// <param name="dataReader">Читатель данных SQL-запроса.</param>
         /// <returns>Пользователь, полученный из читателя даных SQL-запроса.</returns>
         User GetUserFromReader(IDataReader dataReader);
+
+        /// <summary>
+        /// Создание нового пользователя в базе даных.
+        /// </summary>
+        /// <param name="name">Имя нового пользователя.</param>
+        /// <param name="hashedPassword">Захэшированный пароль пользователя.</param>
+        /// <param name="email">Электронная почта нового пользователя.</param>
+        Task AddUserAsync(string name, string hashedPassword, string email);
+
+        /// <summary>
+        /// Проверяет, существует ли пользователь с заданной электронной почте в базе данных.
+        /// </summary>
+        /// <param name="email">Электронная почта.</param>
+        /// <returns>True, если пользователь с заданной электронной почтой существует, иначе false.</returns>
+        Task<bool> IsUserExistsWithEmail(string email);
+
+        /// <summary>
+        /// Проверяет, является ли пользователь админом в выбранном чате.
+        /// </summary>
+        /// <param name="userId">Id пользователя, которого нужно проверить.</param>
+        /// <param name="chatId">Id чата, в котором нужно проверить пользователя.</param>
+        /// <returns>True если пользователь чата является админом, иначе false.</returns>
+        Task<bool> IsAdmin(int userId, int chatId);
     }
 }

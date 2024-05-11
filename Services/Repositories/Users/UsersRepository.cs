@@ -11,29 +11,28 @@ namespace SoftworkMessanger.Services.Repositories.Users
 
         #region IUsersRepository implementation
 
-        public User? GetById(int userId)
+        public async Task<User?> GetByIdAsync(int userId)
         {
-            User? user = GetUsersListFromSqlQueryAsync($@"SELECT * FROM Users WHERE Users.UserId = {userId}").Result?.First();
-            return user;
+            IEnumerable<User>? users = await GetUsersListFromSqlQueryAsync($@"SELECT * FROM Users WHERE Users.UserId = {userId}");
+            return users?.First();
         }
 
-        public User? GetByUserName(string userName)
+        public async Task<User?> GetByEmailAsync(string email)
         {
-            User? user = GetUsersListFromSqlQueryAsync(@$"SELECT * FROM Users WHERE Users.UserName = '{userName}'").Result?.First();
-            return user;
+            IEnumerable<User>? users = await GetUsersListFromSqlQueryAsync(@$"SELECT * FROM Users WHERE Users.UserEmail = '{email}'");
+            return users?.First();
         }
 
         public User GetUserFromReader(IDataReader dataReader)
         {
             try
             {
-                User user = new User
-                {
-                    UserId = (int)dataReader["UserID"],
-                    UserName = (string)dataReader["UserName"],
-                    UserHashedPassword = (string)dataReader["UserPassword"],
-                    UserEmail = (string)dataReader["UserEmail"]
-                };
+                // Создание объекта класса User на основе данных, предоставленных читателем данных IDataReader
+                User user = new User(
+                    userId: (int)dataReader["UserID"],
+                    userName: (string)dataReader["UserName"],
+                    hashedPassword: (string)dataReader["UserPassword"],
+                    email: (string)dataReader["UserEmail"]);
 
                 return user;
             }
@@ -44,9 +43,32 @@ namespace SoftworkMessanger.Services.Repositories.Users
             }
         }
 
+        public async Task AddUserAsync(string name, string password, string email)
+        {
+            await ExecuteNonQueryAsync($@"
+                INSERT INTO Users(UserName, UserPassword, UserEmail)
+                VALUES('{name}', '{password}', '{email}');");
+        }
+
+        public async Task<bool> IsUserExistsWithEmail(string email)
+        {
+            return await IsSqlQueryEmpty($@"SELECT * FROM Users WHERE Users.UserEmail = '{email}';");
+        }
+
+        public async Task<bool> IsAdmin(int userId, int chatId)
+        {
+            return await IsSqlQueryEmpty($@"
+                        SELECT UserChats.UserRole
+                        FROM UserChats
+                        WHERE
+                            UserChats.UserId = {userId} AND
+                            UserChats.ChatId = {chatId} AND
+                            UserChats.UserRole = 'Admin';");
+        }
+
         #endregion
 
-        
+
         /// <summary>
         /// Получение списка пользователей из SQL-запроса.
         /// </summary>

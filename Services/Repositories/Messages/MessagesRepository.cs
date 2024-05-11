@@ -10,18 +10,15 @@ namespace SoftworkMessanger.Services.Repositories.Messages
         public MessagesRepository(SqlServerConnector sqlServerConnector) : base(sqlServerConnector) { }
 
 
-        public Message GetMessageFromReader(IDataReader dataReader)
+        public Message GetMessageFromReader(IDataReader dataReader, string authorIdColumn, string authorNameColumn, string messageTextColumn)
         {
             try
             {
-                Message message = new Message
-                {
-                    MessageId = (int)dataReader["MessageId"],
-                    MessageText = (string)dataReader["MessageText"],
-                    AuthorId = (int)dataReader["AuthorId"],
-                    ChatId = (int)dataReader["ChatId"]
-                };
+                int authorId = (int)dataReader[authorIdColumn];
+                string authorName = (string)dataReader[authorNameColumn];
+                string messageText = (string)dataReader[messageTextColumn];
 
+                Message message = new Message(authorId, authorName, messageText);
                 return message;
             }
             catch
@@ -31,11 +28,11 @@ namespace SoftworkMessanger.Services.Repositories.Messages
             }
         }
 
-        public async Task AddMessageAsync(NewMessageData newMessageData)
+        public async Task AddMessageAsync(NewMessageData newMessageData, int authorId)
         {
             await ExecuteNonQueryAsync(
                 @$"INSERT INTO Messages(MessageText, AuthorId, ChatId) 
-                   VALUES ('{newMessageData.MessageText}', {newMessageData.AuthorId}, {newMessageData.ChatId});");
+                   VALUES ('{newMessageData.MessageText}', {authorId}, {newMessageData.ChatId});");
         }
     }
 }

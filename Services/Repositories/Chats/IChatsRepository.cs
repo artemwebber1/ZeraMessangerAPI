@@ -14,7 +14,7 @@ namespace SoftworkMessanger.Services.Repositories.Chats
         /// </summary>
         /// <param name="chatId">Id чата, который нужно вернуть.</param>
         /// <returns>Чат с указанным <paramref name="chatId"/>.</returns>
-        Task<IEnumerable<Chat>?> GetByIdAsync(int chatId);
+        Task<Chat?> GetByIdAsync(int chatId);
 
         /// <summary>
         /// Получение чатов для конкретного пользователя.
@@ -28,13 +28,17 @@ namespace SoftworkMessanger.Services.Repositories.Chats
         /// </summary>
         /// <param name="dataReader">Читатель данных SQL-запроса.</param>
         /// <returns>Объект класса <see cref="Chat"/>, прочитанный из читателя данных SQL-запроса.</returns>
-        Chat GetChatFromReader(IDataReader dataReader);
+        Task<Chat?> GetChatFromReader(
+            IDataReader dataReader,
+            string chatIdColumn,
+            string chatNameColumn);
 
         /// <summary>
         /// Добавление нового чата в базу данных.
         /// </summary>
         /// <param name="chatName">Имя нового чата.</param>
-        Task CreateChatAsync(NewChatData newChatData);
+        /// <param name="creatorId">Id создателя чата.</param>
+        Task CreateChatAsync(string chatName, int creatorId);
 
         /// <summary>
         /// Добавление пользователя в чат.
@@ -57,13 +61,5 @@ namespace SoftworkMessanger.Services.Repositories.Chats
         /// <param name="chatId">Id чата.</param>
         /// <returns>True если пользователь является участником чата, иначе false.</returns>
         Task<bool> IsChatContainsMember(int userId, int chatId);
-
-        /// <summary>
-        /// Проверяет, является ли пользователь админом в выбранном чате.
-        /// </summary>
-        /// <param name="userId">Id пользователя, которого нужно проверить.</param>
-        /// <param name="chatId">Id чата, в котором нужно проверить пользователя.</param>
-        /// <returns>True если пользователь чата является админом, иначе false.</returns>
-        Task<bool> IsAdmin(int userId, int chatId);
     }
 }
