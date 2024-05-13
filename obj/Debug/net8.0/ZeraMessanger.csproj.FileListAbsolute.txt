@@ -208,3 +208,4 @@ D:\projects\CSharp\Web\ZeraMessanger\Backend\ZeraMessanger\obj\Debug\net8.0\refi
 D:\projects\CSharp\Web\ZeraMessanger\Backend\ZeraMessanger\obj\Debug\net8.0\ZeraMessanger.pdb
 D:\projects\CSharp\Web\ZeraMessanger\Backend\ZeraMessanger\obj\Debug\net8.0\ZeraMessanger.genruntimeconfig.cache
 D:\projects\CSharp\Web\ZeraMessanger\Backend\ZeraMessanger\obj\Debug\net8.0\ref\ZeraMessanger.dll
+D:\projects\CSharp\Web\ZeraMessanger\Backend\ZeraMessanger\obj\Debug\net8.0\ZeraMessanger.sourcelink.json

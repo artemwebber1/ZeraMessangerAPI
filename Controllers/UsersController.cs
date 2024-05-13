@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZeraMessanger.Models;
+using ZeraMessanger.Models.Dto.UserDto;
 using ZeraMessanger.Services.Authentification.Jwt;
 using ZeraMessanger.Services.Repositories.Users;
 
@@ -26,6 +27,8 @@ namespace ZeraMessanger.Controllers
 
         private readonly IJwtDecoder _jwtDecoder;
 
+        private int IdentityId => int.Parse(_jwtDecoder.GetClaimValue("UserId", Request));
+
         #region Actions
 
         [HttpGet("{userId:int}")]
@@ -38,8 +41,14 @@ namespace ZeraMessanger.Controllers
         [HttpGet("Identity")]
         public async Task<User?> GetIdentityAsync()
         {
-            int userId = int.Parse(_jwtDecoder.GetClaimValue("UserId", Request));
-            return await _usersRepository.GetByIdAsync(userId);
+            return await _usersRepository.GetByIdAsync(IdentityId);
+        }
+
+        [Authorize]
+        [HttpPut("UpdateIdentityData")]
+        public async Task UpdateIdentityData(UserUpdateData updateData)
+        {
+            await _usersRepository.UpdateUserAsync(updateData, userId: IdentityId);
         }
 
         #endregion
