@@ -59,6 +59,7 @@ namespace ZeraMessanger.Services.Repositories.Users
 
         public async Task UpdateUserAsync(UserUpdateData updateData, int userId)
         {
+            // Хэширование нового пароля перед его добавлением в базу данных.
             IPasswordHasher passwordHasher = new PasswordHasher();
             string hashedPassword = passwordHasher.Generate(updateData.UserPassword);
 

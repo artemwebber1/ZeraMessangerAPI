@@ -12,22 +12,19 @@ namespace ZeraMessanger.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : ZeraControllerBase
     {
-        public UsersController(IUsersRepository usersRepository, IJwtDecoder jwtDecoder)
+        public UsersController(
+            IUsersRepository usersRepository, 
+            IJwtDecoder jwtDecoder) : base(jwtDecoder)
         {
             _usersRepository = usersRepository;
-            _jwtDecoder = jwtDecoder;
         }
 
         /// <summary>
         /// Репозиторий пользователей для работы с соответствующей таблицей в базе данных.
         /// </summary>
         private readonly IUsersRepository _usersRepository;
-
-        private readonly IJwtDecoder _jwtDecoder;
-
-        private int IdentityId => int.Parse(_jwtDecoder.GetClaimValue("UserId", Request));
 
         #region Actions
 
@@ -51,7 +48,6 @@ namespace ZeraMessanger.Controllers
             await _usersRepository.UpdateUserAsync(updateData, userId: IdentityId);
         }
 
-        #endregion
-        
+        #endregion        
     }
 }
