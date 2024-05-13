@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ZeraMessanger")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+77b26be6347e62fd2f202b8517e59a6250ba1a00")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+659b9a0738785c909688c172ad3adb3ac84b34de")]
 [assembly: System.Reflection.AssemblyProductAttribute("ZeraMessanger")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ZeraMessanger")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

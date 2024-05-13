@@ -2,6 +2,8 @@
 using System.Data;
 using ZeraMessanger.Utilites;
 using ZeraMessanger.Models;
+using ZeraMessanger.Models.Dto.UserDto;
+using ZeraMessanger.Services.Authentification;
 
 namespace ZeraMessanger.Services.Repositories.Users
 {
@@ -53,6 +55,20 @@ namespace ZeraMessanger.Services.Repositories.Users
             await ExecuteNonQueryAsync($@"
                 INSERT INTO Users(UserName, UserPassword, UserEmail)
                 VALUES('{name}', '{password}', '{email}');");
+        }
+
+        public async Task UpdateUserAsync(UserUpdateData updateData, int userId)
+        {
+            IPasswordHasher passwordHasher = new PasswordHasher();
+            string hashedPassword = passwordHasher.Generate(updateData.UserPassword);
+
+            await ExecuteNonQueryAsync($@"
+                UPDATE Users 
+                SET Users.UserEmail = '{updateData.UserEmail}',
+                    Users.UserName = '{updateData.UserName}',
+                    Users.UserPassword = '{hashedPassword}'
+
+                WHERE Users.UserId = {userId};");
         }
 
         public async Task<bool> IsUserExistsWithEmail(string email)

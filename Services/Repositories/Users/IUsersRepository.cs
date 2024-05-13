@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using ZeraMessanger.Models;
+using ZeraMessanger.Models.Dto.UserDto;
 
 namespace ZeraMessanger.Services.Repositories.Users
 {
@@ -41,6 +42,13 @@ namespace ZeraMessanger.Services.Repositories.Users
         /// <param name="hashedPassword">Захэшированный пароль пользователя.</param>
         /// <param name="email">Электронная почта нового пользователя.</param>
         Task AddUserAsync(string name, string hashedPassword, string email);
+
+        /// <summary>
+        /// Изменение данных о пользователе.
+        /// </summary>
+        /// <param name="updateData">Данные, которые пользователь обновляет.</param>
+        /// <param name="userId">Id пользователя, который изменяет свои данные.</param>
+        Task UpdateUserAsync(UserUpdateData updateData, int userId);
 
         /// <summary>
         /// Проверяет, существует ли пользователь с заданной электронной почте в базе данных.
