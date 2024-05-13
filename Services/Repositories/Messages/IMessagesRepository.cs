@@ -1,8 +1,8 @@
-﻿using SoftworkMessanger.Models;
-using SoftworkMessanger.Models.Dto.MessageDto;
+﻿using ZeraMessanger.Models;
+using ZeraMessanger.Models.Dto.MessageDto;
 using System.Data;
 
-namespace SoftworkMessanger.Services.Repositories.Messages
+namespace ZeraMessanger.Services.Repositories.Messages
 {
     /// <summary>
     /// Репозиторий для работы с таблицей сообщений.

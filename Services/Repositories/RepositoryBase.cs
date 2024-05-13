@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
-using SoftworkMessanger.Utilites;
+using ZeraMessanger.Utilites;
 
-namespace SoftworkMessanger.Services.Repositories
+namespace ZeraMessanger.Services.Repositories
 {
     public class RepositoryBase
     {

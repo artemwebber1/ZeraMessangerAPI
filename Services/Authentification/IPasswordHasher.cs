@@ -1,4 +1,4 @@
-﻿namespace SoftworkMessanger.Services.Authentification
+﻿namespace ZeraMessanger.Services.Authentification
 {
     public interface IPasswordHasher
     {

@@ -1,8 +1,8 @@
-﻿using SoftworkMessanger.Models;
-using SoftworkMessanger.Models.Dto.ChatDto;
+﻿using ZeraMessanger.Models;
+using ZeraMessanger.Models.Dto.ChatDto;
 using System.Data;
 
-namespace SoftworkMessanger.Services.Repositories.Chats
+namespace ZeraMessanger.Services.Repositories.Chats
 {
     /// <summary>
     /// Репозиторий для работы с таблицей чатов в базе данных.

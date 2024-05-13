@@ -1,11 +1,11 @@
-﻿using SoftworkMessanger.Models;
-using SoftworkMessanger.Models.Dto.UserDto;
-using SoftworkMessanger.Services.Authentification.Jwt;
-using SoftworkMessanger.Services.Repositories.Users;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using ZeraMessanger.Services.Authentification.Jwt;
+using ZeraMessanger.Services.Repositories.Users;
+using ZeraMessanger.Models;
+using ZeraMessanger.Models.Dto.UserDto;
 
-namespace SoftworkMessanger.Services.Authentification
+namespace ZeraMessanger.Services.Authentification
 {
     public class AuthentificationService : IAuthentificationService
     {

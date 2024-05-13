@@ -1,9 +1,7 @@
-﻿using SoftworkMessanger.Models;
-using SoftworkMessanger.Models.Dto.ChatDto;
-using SoftworkMessanger.Services.Repositories.Messages;
-using System.Data;
+﻿using ZeraMessanger.Models;
+using ZeraMessanger.Models.Dto.ChatDto;
 
-namespace SoftworkMessanger.Extensions
+namespace ZeraMessanger.Extensions
 {
     public static class ChatExtensions
     {

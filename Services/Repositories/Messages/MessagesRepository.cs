@@ -1,9 +1,9 @@
-﻿using SoftworkMessanger.Models;
-using SoftworkMessanger.Models.Dto.MessageDto;
-using SoftworkMessanger.Utilites;
+﻿using ZeraMessanger.Models;
+using ZeraMessanger.Models.Dto.MessageDto;
+using ZeraMessanger.Utilites;
 using System.Data;
 
-namespace SoftworkMessanger.Services.Repositories.Messages
+namespace ZeraMessanger.Services.Repositories.Messages
 {
     public class MessagesRepository : RepositoryBase, IMessagesRepository
     {

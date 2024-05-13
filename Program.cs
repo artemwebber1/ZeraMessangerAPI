@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using SoftworkMessanger.Hubs;
-using SoftworkMessanger.Services.Authentification;
-using SoftworkMessanger.Services.Authentification.Jwt;
-using SoftworkMessanger.Services.Repositories.Chats;
-using SoftworkMessanger.Services.Repositories.Messages;
-using SoftworkMessanger.Services.Repositories.Users;
-using SoftworkMessanger.Utilites;
+using ZeraMessanger.Services.Authentification.Jwt;
+using ZeraMessanger.Utilites;
+using ZeraMessanger.Services.Authentification;
+using ZeraMessanger.Services.Repositories.Chats;
+using ZeraMessanger.Services.Repositories.Messages;
+using ZeraMessanger.Services.Repositories.Users;
 
-namespace SoftworkMessanger
+namespace ZeraMessanger
 {
     public class Program
     {

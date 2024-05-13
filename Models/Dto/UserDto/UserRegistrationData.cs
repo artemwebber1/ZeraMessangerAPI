@@ -1,4 +1,4 @@
-﻿namespace SoftworkMessanger.Models.Dto.UserDto
+﻿namespace ZeraMessanger.Models.Dto.UserDto
 {
     /// <summary>
     /// Данные, которые вводит пользователь в форме регистрации.

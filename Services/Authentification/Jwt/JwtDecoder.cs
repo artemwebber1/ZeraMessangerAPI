@@ -1,7 +1,6 @@
-﻿using Azure.Core;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 
-namespace SoftworkMessanger.Services.Authentification.Jwt
+namespace ZeraMessanger.Services.Authentification.Jwt
 {
     public class JwtDecoder : IJwtDecoder
     {

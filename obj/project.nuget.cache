@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "z+dJ7b4JzLG5gG6nhHVDideANQ/SIDgNtSPOMmq+m0LeStOrogR6IXKN6WnSJCCQlLdcVkVETDGXUYf/SINpGg==",
+  "dgSpecHash": "RI6DdPSxVD3pT3okukXenG2WMrqdf890+qcMg0mHZTQsFrvTpvvi9Or0BRgeT74Gj3PC3RvaVZSm6gwvcVdCnQ==",
   "success": true,
-  "projectFilePath": "D:\\projects\\CSharp\\Web\\SoftworkMessanger\\Backend\\SoftworkMessanger\\SoftworkMessanger.csproj",
+  "projectFilePath": "D:\\projects\\CSharp\\Web\\ZeraMessanger\\Backend\\ZeraMessanger\\ZeraMessanger.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\chekh\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\chekh\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

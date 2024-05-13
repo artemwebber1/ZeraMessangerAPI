@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SoftworkMessanger.Models;
-using SoftworkMessanger.Services.Authentification.Jwt;
-using SoftworkMessanger.Services.Repositories.Users;
+using ZeraMessanger.Models;
+using ZeraMessanger.Services.Authentification.Jwt;
+using ZeraMessanger.Services.Repositories.Users;
 
-namespace SoftworkMessanger.Controllers
+namespace ZeraMessanger.Controllers
 {
     /// <summary>
     /// Контроллер пользователей.

@@ -1,6 +1,6 @@
-﻿using SoftworkMessanger.Models.Dto.MessageDto;
+﻿using ZeraMessanger.Models.Dto.MessageDto;
 
-namespace SoftworkMessanger.Models
+namespace ZeraMessanger.Models
 {
     /// <summary>
     /// Модель чата приложения.

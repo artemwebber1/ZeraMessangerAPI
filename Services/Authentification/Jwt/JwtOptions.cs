@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace SoftworkMessanger.Services.Authentification.Jwt
+namespace ZeraMessanger.Services.Authentification.Jwt
 {
     public record JwtOptions
     {

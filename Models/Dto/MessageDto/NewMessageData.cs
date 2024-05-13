@@ -1,4 +1,4 @@
-﻿namespace SoftworkMessanger.Models.Dto.MessageDto
+﻿namespace ZeraMessanger.Models.Dto.MessageDto
 {
     /// <summary>
     /// Данные нового сообщения в чате.

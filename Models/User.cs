@@ -1,4 +1,4 @@
-﻿namespace SoftworkMessanger.Models
+﻿namespace ZeraMessanger.Models
 {
     /// <summary>
     /// Модель пользователя приложения.

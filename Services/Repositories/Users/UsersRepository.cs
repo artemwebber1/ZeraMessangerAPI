@@ -1,9 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
-using SoftworkMessanger.Models;
-using SoftworkMessanger.Utilites;
 using System.Data;
+using ZeraMessanger.Utilites;
+using ZeraMessanger.Models;
 
-namespace SoftworkMessanger.Services.Repositories.Users
+namespace ZeraMessanger.Services.Repositories.Users
 {
     public class UsersRepository : RepositoryBase, IUsersRepository
     {
@@ -23,16 +23,21 @@ namespace SoftworkMessanger.Services.Repositories.Users
             return users?.First();
         }
 
-        public User GetUserFromReader(IDataReader dataReader)
+        public User GetUserFromReader(
+            IDataReader dataReader,
+            string userIdColumn,
+            string userNameColumn,
+            string userPasswordColumn,
+            string userEmailColumn)
         {
             try
             {
                 // Создание объекта класса User на основе данных, предоставленных читателем данных IDataReader
                 User user = new User(
-                    userId: (int)dataReader["UserID"],
-                    userName: (string)dataReader["UserName"],
-                    hashedPassword: (string)dataReader["UserPassword"],
-                    email: (string)dataReader["UserEmail"]);
+                    userId: (int)dataReader[userIdColumn],
+                    userName: (string)dataReader[userNameColumn],
+                    hashedPassword: (string)dataReader[userPasswordColumn],
+                    email: (string)dataReader[userEmailColumn]);
 
                 return user;
             }
@@ -84,7 +89,7 @@ namespace SoftworkMessanger.Services.Repositories.Users
 
             // Создание читателя данных SQL-запроса
             using SqlDataReader reader = await sqlCommand.ExecuteReaderAsync();
-            
+
             // Если у SQL-запроса нет строк, возвращаем null
             if (!reader.HasRows)
                 return null;
@@ -107,7 +112,12 @@ namespace SoftworkMessanger.Services.Repositories.Users
 
             while (await dataReader.ReadAsync())
             {
-                User? user = GetUserFromReader(dataReader);
+                User? user = GetUserFromReader(
+                    dataReader,
+                    userIdColumn: "UserId",
+                    userNameColumn: "UserName",
+                    userPasswordColumn: "UserPassword",
+                    userEmailColumn: "UserEmail");
                 if (user != null)
                     users.AddLast(user);
             }

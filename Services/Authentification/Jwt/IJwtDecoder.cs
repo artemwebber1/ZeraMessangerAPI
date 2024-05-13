@@ -1,4 +1,4 @@
-﻿namespace SoftworkMessanger.Services.Authentification.Jwt
+﻿namespace ZeraMessanger.Services.Authentification.Jwt
 {
     public interface IJwtDecoder
     {

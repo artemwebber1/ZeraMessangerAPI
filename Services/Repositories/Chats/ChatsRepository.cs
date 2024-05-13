@@ -1,12 +1,12 @@
 ﻿using Microsoft.Data.SqlClient;
-using SoftworkMessanger.Extensions;
-using SoftworkMessanger.Models;
-using SoftworkMessanger.Models.Dto.ChatDto;
-using SoftworkMessanger.Services.Repositories.Messages;
-using SoftworkMessanger.Utilites;
+using ZeraMessanger.Extensions;
+using ZeraMessanger.Models;
+using ZeraMessanger.Models.Dto.ChatDto;
+using ZeraMessanger.Utilites;
 using System.Data;
+using ZeraMessanger.Services.Repositories.Messages;
 
-namespace SoftworkMessanger.Services.Repositories.Chats
+namespace ZeraMessanger.Services.Repositories.Chats
 {
     public class ChatsRepository : RepositoryBase, IChatsRepository
     {
@@ -72,7 +72,7 @@ namespace SoftworkMessanger.Services.Repositories.Chats
                 int membersCount = await GetChatMembersCount(chatId);
 
                 Chat chat = new Chat(
-                    chatId, 
+                    chatId,
                     chatName,
                     membersCount);
 

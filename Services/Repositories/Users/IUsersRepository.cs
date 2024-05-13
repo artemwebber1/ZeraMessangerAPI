@@ -1,9 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
-using SoftworkMessanger.Models;
-using SoftworkMessanger.Models.Dto.UserDto;
-using System.Data;
+﻿using System.Data;
+using ZeraMessanger.Models;
 
-namespace SoftworkMessanger.Services.Repositories.Users
+namespace ZeraMessanger.Services.Repositories.Users
 {
     /// <summary>
     /// Репозиторий для работы с таблицей пользователей.
@@ -29,7 +27,12 @@ namespace SoftworkMessanger.Services.Repositories.Users
         /// </summary>
         /// <param name="dataReader">Читатель данных SQL-запроса.</param>
         /// <returns>Пользователь, полученный из читателя даных SQL-запроса.</returns>
-        User GetUserFromReader(IDataReader dataReader);
+        User GetUserFromReader(
+            IDataReader dataReader,
+            string userIdColumn,
+            string userNameColumn,
+            string userPasswordColumn,
+            string userEmailColumn);
 
         /// <summary>
         /// Создание нового пользователя в базе даных.

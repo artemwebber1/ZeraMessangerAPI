@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SoftworkMessanger.Models.Dto.UserDto;
+using ZeraMessanger.Models.Dto.UserDto;
 
-namespace SoftworkMessanger.Services.Authentification
+namespace ZeraMessanger.Services.Authentification
 {
     /// <summary>
     /// Сервис, отвечающий за аутентификацию пользователей.

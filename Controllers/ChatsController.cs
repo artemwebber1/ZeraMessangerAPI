@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SoftworkMessanger.Models;
-using SoftworkMessanger.Models.Dto.ChatDto;
-using SoftworkMessanger.Models.Dto.MessageDto;
-using SoftworkMessanger.Services.Repositories.Chats;
-using SoftworkMessanger.Services.Repositories.Messages;
-using SoftworkMessanger.Services.Authentification.Jwt;
-using SoftworkMessanger.Services.Repositories.Users;
+using ZeraMessanger.Models;
+using ZeraMessanger.Models.Dto.ChatDto;
+using ZeraMessanger.Models.Dto.MessageDto;
+using ZeraMessanger.Services.Authentification.Jwt;
+using ZeraMessanger.Services.Repositories.Chats;
+using ZeraMessanger.Services.Repositories.Messages;
+using ZeraMessanger.Services.Repositories.Users;
 
 namespace SoftworkMessanger.Controllers
 {

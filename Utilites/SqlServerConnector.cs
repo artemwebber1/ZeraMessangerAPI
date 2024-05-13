@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace SoftworkMessanger.Utilites
+namespace ZeraMessanger.Utilites
 {
     public class SqlServerConnector
     {

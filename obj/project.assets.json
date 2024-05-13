@@ -2017,11 +2017,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\projects\\CSharp\\Web\\SoftworkMessanger\\Backend\\SoftworkMessanger\\SoftworkMessanger.csproj",
-      "projectName": "SoftworkMessanger",
-      "projectPath": "D:\\projects\\CSharp\\Web\\SoftworkMessanger\\Backend\\SoftworkMessanger\\SoftworkMessanger.csproj",
+      "projectUniqueName": "D:\\projects\\CSharp\\Web\\ZeraMessanger\\Backend\\ZeraMessanger\\ZeraMessanger.csproj",
+      "projectName": "ZeraMessanger",
+      "projectPath": "D:\\projects\\CSharp\\Web\\ZeraMessanger\\Backend\\ZeraMessanger\\ZeraMessanger.csproj",
       "packagesPath": "C:\\Users\\chekh\\.nuget\\packages\\",
-      "outputPath": "D:\\projects\\CSharp\\Web\\SoftworkMessanger\\Backend\\SoftworkMessanger\\obj\\",
+      "outputPath": "D:\\projects\\CSharp\\Web\\ZeraMessanger\\Backend\\ZeraMessanger\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

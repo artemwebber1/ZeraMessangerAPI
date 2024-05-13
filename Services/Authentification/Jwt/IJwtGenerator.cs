@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace SoftworkMessanger.Services.Authentification.Jwt
+namespace ZeraMessanger.Services.Authentification.Jwt
 {
     public interface IJwtGenerator
     {

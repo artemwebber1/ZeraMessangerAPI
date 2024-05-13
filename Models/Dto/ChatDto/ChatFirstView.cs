@@ -1,4 +1,4 @@
-﻿namespace SoftworkMessanger.Models.Dto.ChatDto
+﻿namespace ZeraMessanger.Models.Dto.ChatDto
 {
     /// <summary>
     /// Поверхностная информация о чате, которую видет пользователь в списке его чатов 

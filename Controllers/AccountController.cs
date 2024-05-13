@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using SoftworkMessanger.Models.Dto.UserDto;
-using SoftworkMessanger.Services.Authentification;
+using ZeraMessanger.Models.Dto.UserDto;
+using ZeraMessanger.Services.Authentification;
 
-namespace SoftworkMessanger.Controllers
+namespace ZeraMessanger.Controllers
 {
     [ApiController]
     [Route("Api/[controller]")]
