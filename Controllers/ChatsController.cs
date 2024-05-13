@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ZeraMessanger.Controllers;
 using ZeraMessanger.Models;
 using ZeraMessanger.Models.Dto.ChatDto;
 using ZeraMessanger.Models.Dto.MessageDto;
@@ -8,7 +9,7 @@ using ZeraMessanger.Services.Repositories.Chats;
 using ZeraMessanger.Services.Repositories.Messages;
 using ZeraMessanger.Services.Repositories.Users;
 
-namespace SoftworkMessanger.Controllers
+namespace ZeraMessanger.Controllers
 {
     /// <summary>
     /// Контроллер чатов.
@@ -16,21 +17,22 @@ namespace SoftworkMessanger.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class ChatsController : ControllerBase
+    public class ChatsController : ZeraControllerBase
     {
-        public ChatsController(IUsersRepository usersRepository, IChatsRepository chatsRepository, IMessagesRepository messagesRepository, IJwtDecoder jwtDecoder)
+        public ChatsController(
+            IUsersRepository usersRepository,
+            IChatsRepository chatsRepository,
+            IMessagesRepository messagesRepository,
+            IJwtDecoder jwtDecoder) : base(jwtDecoder)
         {
             _usersRepository = usersRepository;
             _chatsRepository = chatsRepository;
             _messagesRepository = messagesRepository;
-            _jwtDecoder = jwtDecoder;
         }
 
         private readonly IUsersRepository _usersRepository;
         private readonly IChatsRepository _chatsRepository;
         private readonly IMessagesRepository _messagesRepository;
-        
-        private readonly IJwtDecoder _jwtDecoder;
 
         #region Actions
 
@@ -44,15 +46,13 @@ namespace SoftworkMessanger.Controllers
         [HttpGet("UserChats")]
         public async Task<IEnumerable<ChatFirstView>> GetChatsForUserWithIdAsync()
         {
-            int userId = int.Parse(_jwtDecoder.GetClaimValue("UserId", Request));
-            return await _chatsRepository.GetUserChatsAsync(userId);
+            return await _chatsRepository.GetUserChatsAsync(IdentityId);
         }
 
         [HttpPost("CreateChat")]
         public async Task<IResult> CreateChatAsync(string chatName)
         {
-            int chatCreatorId = int.Parse(_jwtDecoder.GetClaimValue("UserId", Request));
-            await _chatsRepository.CreateChatAsync(chatName, chatCreatorId);
+            await _chatsRepository.CreateChatAsync(chatName, IdentityId);
             return Results.Ok();
         }
 
@@ -63,7 +63,7 @@ namespace SoftworkMessanger.Controllers
             bool isUserInChat = await _chatsRepository.IsChatContainsMember(userId, chatId);
 
             // Приглашающий состоит в чате?
-            int inviterId = int.Parse(_jwtDecoder.GetClaimValue("UserId", Request));
+            int inviterId = IdentityId;
             bool isInviterInChat = await _chatsRepository.IsChatContainsMember(inviterId, chatId);
 
             if (isUserInChat || !isInviterInChat)
@@ -87,7 +87,7 @@ namespace SoftworkMessanger.Controllers
             //      -------
             //      В обоих случаях проверяется, состоит ли пользователь, которого нужно исключить, в чате.
 
-            int excluderId = int.Parse(_jwtDecoder.GetClaimValue("UserId", Request));
+            int excluderId = IdentityId;
 
             bool isChatContainsUser = await _chatsRepository.IsChatContainsMember(userId, chatId);
 
@@ -104,7 +104,7 @@ namespace SoftworkMessanger.Controllers
         [HttpPost("AddMessage")]
         public async Task<IResult> AddMessage(NewMessageData newMessageData)
         {
-            int messageAuthorId = int.Parse(_jwtDecoder.GetClaimValue("UserId", Request));
+            int messageAuthorId = IdentityId;
 
             //  Пользователь может отправлять сообщения только если он является участником чата
             bool isMessageAuthorInChat = await _chatsRepository.IsChatContainsMember(messageAuthorId, newMessageData.ChatId);
@@ -116,6 +116,5 @@ namespace SoftworkMessanger.Controllers
         }
 
         #endregion
-
     }
 }
