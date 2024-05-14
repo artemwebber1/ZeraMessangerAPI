@@ -22,17 +22,14 @@ namespace ZeraMessanger.Controllers
         public ChatsController(
             IUsersRepository usersRepository,
             IChatsRepository chatsRepository,
-            IMessagesRepository messagesRepository,
             IJwtDecoder jwtDecoder) : base(jwtDecoder)
         {
             _usersRepository = usersRepository;
             _chatsRepository = chatsRepository;
-            _messagesRepository = messagesRepository;
         }
 
         private readonly IUsersRepository _usersRepository;
         private readonly IChatsRepository _chatsRepository;
-        private readonly IMessagesRepository _messagesRepository;
 
         #region Actions
 
@@ -99,20 +96,6 @@ namespace ZeraMessanger.Controllers
 
             await _chatsRepository.DeleteUserFromChatAsync(userId, chatId);
             return Results.Ok($"Пользователь с id = {userId} был исключен из чата {chatId}.");
-        }
-
-        [HttpPost("AddMessage")]
-        public async Task<IResult> AddMessage(NewMessageData newMessageData)
-        {
-            int messageAuthorId = IdentityId;
-
-            //  Пользователь может отправлять сообщения только если он является участником чата
-            bool isMessageAuthorInChat = await _chatsRepository.IsChatContainsMember(messageAuthorId, newMessageData.ChatId);
-            if (!isMessageAuthorInChat)
-                return Results.Forbid();
-            
-            await _messagesRepository.AddMessageAsync(newMessageData, messageAuthorId);
-            return Results.Ok();
         }
 
         #endregion

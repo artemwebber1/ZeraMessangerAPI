@@ -10,7 +10,11 @@ namespace ZeraMessanger.Services.Repositories.Messages
         public MessagesRepository(SqlServerConnector sqlServerConnector) : base(sqlServerConnector) { }
 
 
-        public Message GetMessageFromReader(IDataReader dataReader, string authorIdColumn, string authorNameColumn, string messageTextColumn)
+        public Message GetMessageFromReader(
+            IDataReader dataReader,
+            string authorIdColumn, 
+            string authorNameColumn, 
+            string messageTextColumn)
         {
             try
             {
@@ -32,7 +36,7 @@ namespace ZeraMessanger.Services.Repositories.Messages
         {
             await ExecuteNonQueryAsync(
                 @$"INSERT INTO Messages(MessageText, AuthorId, ChatId) 
-                   VALUES ('{newMessageData.MessageText}', {authorId}, {newMessageData.ChatId});");
+                   VALUES (N'{newMessageData.MessageText}', {authorId}, {newMessageData.ChatId});");
         }
     }
 }

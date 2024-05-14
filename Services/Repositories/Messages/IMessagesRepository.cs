@@ -14,7 +14,11 @@ namespace ZeraMessanger.Services.Repositories.Messages
         /// </summary>
         /// <param name="dataReader">Читатель данных.</param>
         /// <returns>Объект класса <see cref="Message"/>, полученный из читателя данных.</returns>
-        Message GetMessageFromReader(IDataReader dataReader, string authorIdColumn, string authorNameColumn, string messageTextColumn);
+        Message GetMessageFromReader(
+            IDataReader dataReader, 
+            string authorIdColumn, 
+            string authorNameColumn,
+            string messageTextColumn);
 
         /// <summary>
         /// Добавление сообщения в чат.
