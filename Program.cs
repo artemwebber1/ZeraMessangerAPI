@@ -96,9 +96,6 @@ namespace ZeraMessanger
             app.UseCors();
             app.MapHub<ChatHub>("/chat");
 
-            app.UseStaticFiles();
-            app.UseDefaultFiles();
-
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
