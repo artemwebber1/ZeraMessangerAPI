@@ -1,0 +1,10 @@
+﻿# Files to ignore
+*.suo
+*.user
+_ReSharper.*
+LICENSE
+
+# Directories to ignore
+bin/
+obj/
+packages/
