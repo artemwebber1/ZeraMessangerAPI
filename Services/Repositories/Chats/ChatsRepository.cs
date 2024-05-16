@@ -85,19 +85,21 @@ namespace ZeraMessanger.Services.Repositories.Chats
             }
         }
 
-        public async Task CreateChatAsync(string chatName, int creatorId)
+        public async Task<int> CreateChatAsync(string chatName, int creatorId)
         {
-            await ExecuteNonQueryAsync(
-                @$"DECLARE @NewChatIdTable TABLE(Id INT);
-                   DECLARE @NewChatId INT;
+            return await ExecuteScalarAsync<int>(
+                @$" DECLARE @NewChatIdTable TABLE(ChatId INT);
+                    DECLARE @NewChatId INT;
 
-                   INSERT INTO Chats(ChatName, MembersCount) 
-                   OUTPUT INSERTED.ChatId INTO @NewChatIdTable(Id)
-                   VALUES ('{chatName}', 1)
+                    INSERT INTO Chats(ChatName) 
+                    OUTPUT INSERTED.ChatId INTO @NewChatIdTable(ChatId)
+                    VALUES (N'{chatName}')
 
-                   SELECT @NewChatId = Id FROM @NewChatIdTable
+                    SELECT @NewChatId = ChatId FROM @NewChatIdTable
 
-                   INSERT INTO UserChats(UserId, ChatId, UserRole) VALUES({creatorId}, @NewChatId, 'Admin');");
+                    INSERT INTO UserChats(UserId, ChatId, UserRole) VALUES({creatorId}, @NewChatId, 'Admin');
+
+                    SELECT * FROM @NewChatIdTable;");
         }
 
         public async Task AddUserToChatAsync(int userId, int chatId)

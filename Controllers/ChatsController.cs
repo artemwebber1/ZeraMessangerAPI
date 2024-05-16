@@ -49,8 +49,8 @@ namespace ZeraMessanger.Controllers
         [HttpPost("CreateChat")]
         public async Task<IResult> CreateChatAsync(string chatName)
         {
-            await _chatsRepository.CreateChatAsync(chatName, IdentityId);
-            return Results.Ok();
+            int newChatId = await _chatsRepository.CreateChatAsync(chatName, IdentityId);
+            return Results.Ok(newChatId);
         }
 
         [HttpPost("AddUserToChat")]
