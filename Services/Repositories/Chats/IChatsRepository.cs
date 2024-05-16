@@ -38,7 +38,8 @@ namespace ZeraMessanger.Services.Repositories.Chats
         /// </summary>
         /// <param name="chatName">Имя нового чата.</param>
         /// <param name="creatorId">Id создателя чата.</param>
-        Task CreateChatAsync(string chatName, int creatorId);
+        /// <returns>Id созданного чата.</returns>
+        Task<int> CreateChatAsync(string chatName, int creatorId);
 
         /// <summary>
         /// Добавление пользователя в чат.
