@@ -2,7 +2,7 @@
 using ZeraMessanger.Models.Dto.ChatDto;
 using System.Data;
 
-namespace ZeraMessanger.Services.Repositories.Chats
+namespace ZeraMessanger.Services.Repositories
 {
     /// <summary>
     /// Репозиторий для работы с таблицей чатов в базе данных.
@@ -22,16 +22,6 @@ namespace ZeraMessanger.Services.Repositories.Chats
         /// <param name="userId">Id пользователя, для которого нужно вернуть чаты.</param>
         /// <returns>Набор чатов для конкретного пользователя.</returns>
         Task<IEnumerable<ChatFirstView>> GetUserChatsAsync(int userId);
-
-        /// <summary>
-        /// Получение конкретного чата из читателя данных SQL-запроса.
-        /// </summary>
-        /// <param name="dataReader">Читатель данных SQL-запроса.</param>
-        /// <returns>Объект класса <see cref="Chat"/>, прочитанный из читателя данных SQL-запроса.</returns>
-        Task<Chat?> GetChatFromReader(
-            IDataReader dataReader,
-            string chatIdColumn,
-            string chatNameColumn);
 
         /// <summary>
         /// Добавление нового чата в базу данных.

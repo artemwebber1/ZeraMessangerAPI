@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using ZeraMessanger.Models.Dto.MessageDto;
-using ZeraMessanger.Services.Repositories.Messages;
+using ZeraMessanger.Services.Repositories;
 
 namespace SoftworkMessanger.Hubs
 {

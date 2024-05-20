@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ZeraMessanger.Controllers;
 using ZeraMessanger.Models;
 using ZeraMessanger.Models.Dto.ChatDto;
-using ZeraMessanger.Models.Dto.MessageDto;
 using ZeraMessanger.Services.Authentification.Jwt;
-using ZeraMessanger.Services.Repositories.Chats;
-using ZeraMessanger.Services.Repositories.Messages;
-using ZeraMessanger.Services.Repositories.Users;
+using ZeraMessanger.Services.Repositories;
 
 namespace ZeraMessanger.Controllers
 {
@@ -64,9 +60,7 @@ namespace ZeraMessanger.Controllers
             bool isInviterInChat = await _chatsRepository.IsChatContainsMember(inviterId, chatId);
 
             if (isUserInChat || !isInviterInChat)
-            {
                 return Results.Forbid();
-            }
 
             await _chatsRepository.AddUserToChatAsync(userId, chatId);
             return Results.Ok();
@@ -75,8 +69,8 @@ namespace ZeraMessanger.Controllers
         [HttpDelete("DeleteUserFromChat")]
         public async Task<IResult> DeleteUserFromChatAsync(int userId, int chatId)
         {
-            //  Пользователь удаляется из чата, если выполняется одно из условийй:
-            //      1. Пользователь сам решил выйти из чата (userId == excluderId)
+            //  Пользователь удаляется из чата, если выполняется одно из условий:
+            //      1. Пользователь сам решил выйти из чата (userId == IdentityId)
             //      
             //      2. Пользователя исключает админ чата.
             //         В этом случае проверяется, является ли пользователь,
@@ -92,10 +86,10 @@ namespace ZeraMessanger.Controllers
             bool isExcluderAdmin = await _usersRepository.IsAdmin(excluderId, chatId);
 
             if (!isChatContainsUser || (userId != excluderId && !isExcluderAdmin))
-                return Results.BadRequest($"Ошибка при исключении пользователя с id = {userId}.");
+                return Results.BadRequest(userId);
 
             await _chatsRepository.DeleteUserFromChatAsync(userId, chatId);
-            return Results.Ok($"Пользователь с id = {userId} был исключен из чата {chatId}.");
+            return Results.Ok(userId);
         }
 
         #endregion
