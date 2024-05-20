@@ -4,9 +4,8 @@ using SoftworkMessanger.Hubs;
 using ZeraMessanger.Services.Authentification.Jwt;
 using ZeraMessanger.Utilites;
 using ZeraMessanger.Services.Authentification;
-using ZeraMessanger.Services.Repositories.Chats;
-using ZeraMessanger.Services.Repositories.Messages;
-using ZeraMessanger.Services.Repositories.Users;
+using ZeraMessanger.Services.Repositories;
+using ZeraMessanger.Services.Repositories.EfCoreRepositories;
 
 namespace ZeraMessanger
 {
@@ -70,8 +69,8 @@ namespace ZeraMessanger
             builder.Services.AddScoped<IAuthentificationService, AuthentificationService>();
 
             builder.Services.AddScoped<IUsersRepository, UsersRepository>();
-            builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
             builder.Services.AddScoped<IChatsRepository, ChatsRepository>();
+            builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
 
             #endregion
 

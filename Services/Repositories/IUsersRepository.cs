@@ -2,7 +2,7 @@
 using ZeraMessanger.Models;
 using ZeraMessanger.Models.Dto.UserDto;
 
-namespace ZeraMessanger.Services.Repositories.Users
+namespace ZeraMessanger.Services.Repositories
 {
     /// <summary>
     /// Репозиторий для работы с таблицей пользователей.
@@ -22,18 +22,6 @@ namespace ZeraMessanger.Services.Repositories.Users
         /// <param name="email">Электронная почта пользователя, которого нужно вернуть.</param>
         /// <returns>Пользователь с указанным <paramref name="email"/>.</returns>
         Task<User?> GetByEmailAsync(string email);
-
-        /// <summary>
-        /// Получение одного пользователя из читателя данных SQL-запроса.
-        /// </summary>
-        /// <param name="dataReader">Читатель данных SQL-запроса.</param>
-        /// <returns>Пользователь, полученный из читателя даных SQL-запроса.</returns>
-        User GetUserFromReader(
-            IDataReader dataReader,
-            string userIdColumn,
-            string userNameColumn,
-            string userPasswordColumn,
-            string userEmailColumn);
 
         /// <summary>
         /// Создание нового пользователя в базе даных.

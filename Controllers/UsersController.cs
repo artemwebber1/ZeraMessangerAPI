@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ZeraMessanger.Models;
 using ZeraMessanger.Models.Dto.UserDto;
 using ZeraMessanger.Services.Authentification.Jwt;
-using ZeraMessanger.Services.Repositories.Users;
+using ZeraMessanger.Services.Repositories;
 
 namespace ZeraMessanger.Controllers
 {
@@ -32,20 +32,6 @@ namespace ZeraMessanger.Controllers
         public async Task<User?> GetUserAsync(int userId)
         {
             return await _usersRepository.GetByIdAsync(userId);
-        }
-
-        [Authorize]
-        [HttpGet("Identity")]
-        public async Task<User?> GetIdentityAsync()
-        {
-            return await _usersRepository.GetByIdAsync(IdentityId);
-        }
-
-        [Authorize]
-        [HttpPut("UpdateIdentityData")]
-        public async Task UpdateIdentityData(UserUpdateData updateData)
-        {
-            await _usersRepository.UpdateUserAsync(updateData, userId: IdentityId);
         }
 
         #endregion        

@@ -14,6 +14,6 @@ namespace ZeraMessanger.Extensions
             => new ChatFirstView(
                 chat.ChatId,
                 chat.ChatName,
-                chat.MembersCount);
+                chat.Members.Count);
     }
 }

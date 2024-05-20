@@ -1,9 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ZeraMessanger.Services.Authentification.Jwt;
-using ZeraMessanger.Services.Repositories.Users;
 using ZeraMessanger.Models;
 using ZeraMessanger.Models.Dto.UserDto;
+using ZeraMessanger.Services.Repositories;
 
 namespace ZeraMessanger.Services.Authentification
 {
@@ -42,7 +42,7 @@ namespace ZeraMessanger.Services.Authentification
             User? user = await _usersRepository.GetByEmailAsync(userLoginData.Email);
 
             // Если пользователя с указанной электронной почтой не сущестует или пароли не совпадают, бросаем ошибку
-            if (user == null || !_passwordHasher.Verify(userLoginData.Password, user.UserHashedPassword))
+            if (user == null || !_passwordHasher.Verify(userLoginData.Password, user.UserPassword))
                 return Results.Forbid();
 
             // Пароли совпадают - генерируем JWT-токен и возвращаем его

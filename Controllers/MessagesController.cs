@@ -2,8 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ZeraMessanger.Models.Dto.MessageDto;
 using ZeraMessanger.Services.Authentification.Jwt;
-using ZeraMessanger.Services.Repositories.Chats;
-using ZeraMessanger.Services.Repositories.Messages;
+using ZeraMessanger.Services.Repositories;
 
 namespace ZeraMessanger.Controllers
 {
@@ -33,8 +32,8 @@ namespace ZeraMessanger.Controllers
             if (!isMessageAuthorInChat)
                 return Results.Forbid();
 
-            await _messagesRepository.AddMessageAsync(newMessageData, messageAuthorId);
-            return Results.Ok();
+            int messageId = await _messagesRepository.AddMessageAsync(newMessageData, messageAuthorId);
+            return Results.Ok(messageId);
         }
 
         #endregion
