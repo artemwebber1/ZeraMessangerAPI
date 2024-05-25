@@ -31,11 +31,5 @@ namespace ZeraMessanger.Models
         /// Id чата, в котором находится сообщение.
         /// </summary>
         public int ChatId { get; set; }
-
-        /// <summary>
-        /// Чат, в котором находится сообщение.
-        /// </summary>
-        [JsonIgnore]
-        public Chat? Chat { get; set; }
     }
 }

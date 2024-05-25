@@ -69,25 +69,6 @@ namespace ZeraMessanger.Controllers
         [HttpDelete("DeleteUserFromChat")]
         public async Task<IResult> DeleteUserFromChatAsync(int userId, int chatId)
         {
-            //  Пользователь удаляется из чата, если выполняется одно из условий:
-            //      1. Пользователь сам решил выйти из чата (userId == IdentityId)
-            //      
-            //      2. Пользователя исключает админ чата.
-            //         В этом случае проверяется, является ли пользователь,
-            //         исключающий другого пользователя, админом чата,
-            //      -------
-            //      В обоих случаях проверяется, состоит ли пользователь, которого нужно исключить, в чате.
-
-            int excluderId = IdentityId;
-
-            bool isChatContainsUser = await _chatsRepository.IsChatContainsMember(userId, chatId);
-
-            //  Пользователю, не являющемуся админом, запрещено исключать других пользователей
-            bool isExcluderAdmin = await _usersRepository.IsAdmin(excluderId, chatId);
-
-            if (!isChatContainsUser || (userId != excluderId && !isExcluderAdmin))
-                return Results.BadRequest(userId);
-
             await _chatsRepository.DeleteUserFromChatAsync(userId, chatId);
             return Results.Ok(userId);
         }

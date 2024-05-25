@@ -15,7 +15,7 @@ namespace ZeraMessanger.Models
         public int ChatId { get; set; }
 
         /// <summary>
-        /// Название чата. Название может быть изменено в будущем.
+        /// Название чата.
         /// </summary>
         public string ChatName { get; set; } = string.Empty;
 
@@ -23,12 +23,6 @@ namespace ZeraMessanger.Models
         /// Все сообщения в чате.
         /// </summary>
         public List<Message> Messages { get; set; } = [];
-
-        /// <summary>
-        /// Id админа чата.
-        /// </summary>
-        [JsonIgnore]
-        public int AdminId { get; set; }
 
         /// <summary>
         /// Список участников чата.

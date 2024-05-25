@@ -58,7 +58,6 @@ namespace ZeraMessanger
 
             builder.Services.AddTransient<SqlServerConnector>();
             builder.Services.AddTransient<IJwtGenerator, JwtGenerator>();
-
             builder.Services.AddTransient<IJwtDecoder, JwtDecoder>();
 
             #endregion
