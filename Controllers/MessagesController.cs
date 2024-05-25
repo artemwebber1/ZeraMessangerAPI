@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ZeraMessanger.Models;
 using ZeraMessanger.Models.Dto.MessageDto;
 using ZeraMessanger.Services.Authentification.Jwt;
 using ZeraMessanger.Services.Repositories;

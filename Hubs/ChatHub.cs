@@ -23,7 +23,7 @@ namespace SoftworkMessanger.Hubs
             NewMessageData messageData = new NewMessageData(int.Parse(chatId), messageText);
             await _messagesRepository.AddMessageAsync(messageData, int.Parse(authorId));
 
-            await Clients.Group(chatId).SendAsync("OnMessageSent", messageText, authorId);
+            await Clients.Group(chatId).SendAsync("OnMessageSent", messageText);
         }
     }
 }

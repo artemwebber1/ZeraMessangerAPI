@@ -44,13 +44,5 @@ namespace ZeraMessanger.Services.Repositories
         /// <param name="email">Электронная почта.</param>
         /// <returns>True, если пользователь с заданной электронной почтой существует, иначе false.</returns>
         Task<bool> IsUserExistsWithEmail(string email);
-
-        /// <summary>
-        /// Проверяет, является ли пользователь админом в выбранном чате.
-        /// </summary>
-        /// <param name="userId">Id пользователя, которого нужно проверить.</param>
-        /// <param name="chatId">Id чата, в котором нужно проверить пользователя.</param>
-        /// <returns>True если пользователь чата является админом, иначе false.</returns>
-        Task<bool> IsAdmin(int userId, int chatId);
     }
 }

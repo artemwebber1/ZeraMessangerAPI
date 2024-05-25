@@ -19,7 +19,7 @@ namespace ZeraMessanger.Services.Repositories.EfCoreRepositories
         {
             using ZeraDbContext dbContext = new ZeraDbContext();
 
-            User? user = await dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            User? user = await dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserId == userId);
             return user;
         }
 
@@ -27,7 +27,7 @@ namespace ZeraMessanger.Services.Repositories.EfCoreRepositories
         {
             using ZeraDbContext dbContext = new ZeraDbContext();
 
-            User? user = await dbContext.Users.FirstOrDefaultAsync(u => u.UserEmail == email);
+            User? user = await dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserEmail == email);
             return user;
         }
 
@@ -46,19 +46,10 @@ namespace ZeraMessanger.Services.Repositories.EfCoreRepositories
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> IsAdmin(int userId, int chatId)
-        {
-            using ZeraDbContext dbContext = new ZeraDbContext();
-
-            Chat? chat = await dbContext.Chats.FirstOrDefaultAsync(c => c.ChatId == chatId);
-
-            return chat?.AdminId == userId;
-        }
-
         public async Task<bool> IsUserExistsWithEmail(string email)
         {
             using ZeraDbContext dbContext = new ZeraDbContext();
-            return await dbContext.Users.AnyAsync(u => u.UserEmail == email);
+            return await dbContext.Users.AsNoTracking().AnyAsync(u => u.UserEmail == email);
         }
 
         public async Task UpdateUserAsync(UserUpdateData updateData, int userId)
@@ -67,7 +58,7 @@ namespace ZeraMessanger.Services.Repositories.EfCoreRepositories
 
             User? user = await dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userId);
             if (user == null)
-                throw new NullReferenceException("User to update is null.");
+                throw new NullReferenceException("User to update is null");
 
             user.UserName = updateData.UserName;
             user.UserPassword = _passwordHasher.Generate(updateData.UserPassword);
