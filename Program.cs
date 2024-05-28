@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using SoftworkMessanger.Hubs;
 using ZeraMessanger.Services.Authentification.Jwt;
 using ZeraMessanger.Utilites;
 using ZeraMessanger.Services.Authentification;
 using ZeraMessanger.Services.Repositories;
 using ZeraMessanger.Services.Repositories.EfCoreRepositories;
+using ZeraMessanger.Hubs;
 
 namespace ZeraMessanger
 {

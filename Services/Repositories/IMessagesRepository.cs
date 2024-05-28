@@ -1,6 +1,5 @@
 ﻿using ZeraMessanger.Models;
 using ZeraMessanger.Models.Dto.MessageDto;
-using System.Data;
 
 namespace ZeraMessanger.Services.Repositories
 {
@@ -12,9 +11,9 @@ namespace ZeraMessanger.Services.Repositories
         /// <summary>
         /// Добавление сообщения в чат.
         /// </summary>
-        /// <param name="newMessageData">Данные сообщения.</param>
+        /// <param name="messageData">Данные сообщения.</param>
         /// <param name="authorId">Id автора сообщения.</param>
         /// <returns>Id нового сообщения.</returns>
-        Task<int> AddMessageAsync(NewMessageData newMessageData, int authorId);
+        Task<Message> AddMessageAsync(NewMessageData messageData, int? authorId);
     }
 }

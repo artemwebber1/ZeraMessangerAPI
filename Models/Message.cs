@@ -20,12 +20,15 @@ namespace ZeraMessanger.Models
         /// <summary>
         /// Имя автора сообщения.
         /// </summary>
-        public string AuthorName { get; set; } = string.Empty;
+        public string? AuthorName { get; set; } = string.Empty;
 
         /// <summary>
-        /// Id автора сообщения.
+        /// Id автора сообщения. Если равняется null, то сообщение будет обрабатываться как событийное.
+        /// <br/>
+        /// Событийное сообщение - сообщение, которое не принадлежит никому из пользователей. 
+        /// Оно отправляется само при выполнении какого-либо условия (например, пользователь вышел/зашёл в чат).
         /// </summary>
-        public int AuthorId { get; set; }
+        public int? AuthorId { get; set; } = null;
 
         /// <summary>
         /// Id чата, в котором находится сообщение.

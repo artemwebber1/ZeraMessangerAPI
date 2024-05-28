@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using ZeraMessanger.Models;
 using ZeraMessanger.Models.Dto.MessageDto;
 using ZeraMessanger.Services.Repositories;
 
-namespace SoftworkMessanger.Hubs
+namespace ZeraMessanger.Hubs
 {
     public class ChatHub : Hub
     {
@@ -13,17 +14,18 @@ namespace SoftworkMessanger.Hubs
 
         private readonly IMessagesRepository _messagesRepository;
 
-        public async Task AddUserToChat(string chatId)
+
+        public async Task ConnectUserToChat(string chatId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
         }
 
-        public async Task AddMessageToChat(string messageText, string authorId, string chatId)
+        public async Task AddMessageToChat(string messageText, int chatId, int? authorId)
         {
-            NewMessageData messageData = new NewMessageData(int.Parse(chatId), messageText);
-            await _messagesRepository.AddMessageAsync(messageData, int.Parse(authorId));
+            NewMessageData messageData = new NewMessageData(chatId, messageText);
+            Message message = await _messagesRepository.AddMessageAsync(messageData, authorId);
 
-            await Clients.Group(chatId).SendAsync("OnMessageSent", messageText);
+            await Clients.Group(chatId.ToString()).SendAsync("OnMessageSent", messageText, message.AuthorId, message.AuthorName);
         }
     }
 }
