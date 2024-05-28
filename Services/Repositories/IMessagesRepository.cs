@@ -13,7 +13,7 @@ namespace ZeraMessanger.Services.Repositories
         /// </summary>
         /// <param name="messageData">Данные сообщения.</param>
         /// <param name="authorId">Id автора сообщения.</param>
-        /// <returns>Id нового сообщения.</returns>
+        /// <returns>Объект класса <see cref="Message"/> с данными добавленного сообщения.</returns>
         Task<Message> AddMessageAsync(NewMessageData messageData, int? authorId);
     }
 }

@@ -36,6 +36,7 @@ namespace ZeraMessanger.Services.Repositories
         /// </summary>
         /// <param name="userId">Id пользователя, которого нужно добавить в чат.</param>
         /// <param name="chatId">Id чата, куда надо добавить пльзователя.</param>
+        /// <returns>Объект класса <see cref="User"/> с данными добавленного в чат пользователя.</returns>
         Task<User> AddUserToChatAsync(int userId, int chatId);
 
         /// <summary>
