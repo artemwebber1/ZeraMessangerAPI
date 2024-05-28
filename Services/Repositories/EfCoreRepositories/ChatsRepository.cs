@@ -69,7 +69,7 @@ namespace ZeraMessanger.Services.Repositories.EfCoreRepositories
             return chat.ChatId;
         }
 
-        public async Task AddUserToChatAsync(int userId, int chatId)
+        public async Task<User> AddUserToChatAsync(int userId, int chatId)
         {
             using ZeraDbContext dbContext = new ZeraDbContext();
 
@@ -87,6 +87,8 @@ namespace ZeraMessanger.Services.Repositories.EfCoreRepositories
 
             // Сохранение изменений
             await dbContext.SaveChangesAsync();
+
+            return user;
         }
 
         public async Task DeleteUserFromChatAsync(int userId, int chatId)
