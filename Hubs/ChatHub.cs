@@ -23,8 +23,10 @@ namespace ZeraMessanger.Hubs
         public async Task AddMessageToChat(string messageText, int chatId, int? authorId)
         {
             NewMessageData messageData = new NewMessageData(chatId, messageText);
-            Message message = await _messagesRepository.AddMessageAsync(messageData, authorId);
 
+            // Добавление сообщения в базу данных
+            Message message = await _messagesRepository.AddMessageAsync(messageData, authorId);
+            // Уведомление всех клиентов, состоящих в группе
             await Clients.Group(chatId.ToString()).SendAsync("OnMessageSent", messageText, message.AuthorId, message.AuthorName);
         }
     }
