@@ -57,35 +57,6 @@ namespace ZeraMessanger.Controllers
             return Results.Ok(newChatId);
         }
 
-
-        [HttpPost("AddUserToChat")]
-        public async Task<IResult> AddUserToChatAsync(int userId, int chatId)
-        {
-            // Проверяем, состоит ли уже пользователь в чате, в который его надо добавить
-            bool isUserInChat = await _chatsRepository.IsChatContainsMember(userId, chatId);
-
-            if (isUserInChat)
-                return Results.Forbid();
-
-            // Добавляем пользователя в чат
-            User user = await _chatsRepository.AddUserToChatAsync(userId, chatId);
-            // Уведомление всех пользователей чата
-            await _chatHub.Clients.Group(chatId.ToString()).SendAsync("OnUserJoinedChat", user.UserName);
-
-            return Results.Ok();
-        }
-
-        [HttpDelete("DeleteUserFromChat")]
-        public async Task<IResult> DeleteUserFromChatAsync(int userId, int chatId)
-        {
-            // Удаление пользователя из чата
-            await _chatsRepository.DeleteUserFromChatAsync(userId, chatId);
-            // Уведомление всех пользователей чата
-            await _chatHub.Clients.Group(chatId.ToString()).SendAsync("OnUserLeftChat");
-
-            return Results.Ok(userId);
-        }
-
         #endregion
     }
 }

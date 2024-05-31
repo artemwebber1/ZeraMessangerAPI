@@ -91,7 +91,7 @@ namespace ZeraMessanger.Services.Repositories.EfCoreRepositories
             return user;
         }
 
-        public async Task DeleteUserFromChatAsync(int userId, int chatId)
+        public async Task<int> DeleteUserFromChatAsync(int userId, int chatId)
         {
             using ZeraDbContext dbContext = new ZeraDbContext();
 
@@ -113,6 +113,8 @@ namespace ZeraMessanger.Services.Repositories.EfCoreRepositories
 
             // Сохранение изменений
             await dbContext.SaveChangesAsync();
+
+            return chat.Members.Count;
         }
 
         public async Task<bool> IsChatContainsMember(int userId, int chatId)
