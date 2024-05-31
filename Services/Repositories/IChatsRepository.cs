@@ -44,7 +44,8 @@ namespace ZeraMessanger.Services.Repositories
         /// </summary>
         /// <param name="userId">Id пользователя, который будет удалён из чата.</param>
         /// <param name="chatId">Id чата, из которого пользователь будет удалён.</param>
-        Task DeleteUserFromChatAsync(int userId, int chatId);
+        /// <returns>Количество оставшихся пользователей.</returns>
+        Task<int> DeleteUserFromChatAsync(int userId, int chatId);
 
         /// <summary>
         /// Проверяет, содержится ли пользователь в конкретном чате.
