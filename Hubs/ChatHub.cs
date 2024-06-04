@@ -2,7 +2,7 @@
 using ZeraMessanger.Models;
 using ZeraMessanger.Models.Dto.MessageDto;
 using ZeraMessanger.Services.Repositories;
-using ZeraMessanger.Services.Repositories.EfCoreRepositories;
+
 
 namespace ZeraMessanger.Hubs
 {
@@ -40,6 +40,7 @@ namespace ZeraMessanger.Hubs
         [HubMethodName("DeleteUserFromChat")]
         public async Task DeleteUserFromChatAsync(int userId, int chatId)
         {
+            // Удаление пользователя из чата и получение количества оставшихся участников
             int membersRemained = await _chatsRepository.DeleteUserFromChatAsync(userId, chatId);
 
             if (membersRemained > 0)
@@ -48,7 +49,6 @@ namespace ZeraMessanger.Hubs
 
         public async Task AddMessageToChat(string messageText, int chatId, int? authorId)
         {
-            Console.WriteLine(messageText);
             NewMessageData messageData = new NewMessageData(chatId, messageText);
 
             // Добавление сообщения в базу данных

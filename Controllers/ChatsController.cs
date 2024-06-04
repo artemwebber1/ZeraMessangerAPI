@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using ZeraMessanger.Hubs;
+using ZeraMessanger.Extensions;
 using ZeraMessanger.Models;
 using ZeraMessanger.Models.Dto.ChatDto;
 using ZeraMessanger.Services.Authentification.Jwt;
@@ -20,19 +19,14 @@ namespace ZeraMessanger.Controllers
         public ChatsController(
             IUsersRepository usersRepository,
             IChatsRepository chatsRepository,
-            IHubContext<ChatHub> chatHub,
             IJwtDecoder jwtDecoder) : base(jwtDecoder)
         {
             _usersRepository = usersRepository;
             _chatsRepository = chatsRepository;
-
-            _chatHub = chatHub;
         }
 
         private readonly IUsersRepository _usersRepository;
         private readonly IChatsRepository _chatsRepository;
-
-        private readonly IHubContext<ChatHub> _chatHub;
 
         #region Actions
 
@@ -41,6 +35,13 @@ namespace ZeraMessanger.Controllers
         public async Task<Chat?> GetChatByIdAsync(int chatId)
         {
             return await _chatsRepository.GetByIdAsync(chatId);
+        }
+        
+        [HttpGet("FoundedChatsByName")]
+        public async Task<IEnumerable<ChatFirstView>> FindChatsByNameAsync(string chatName)
+        {
+            IEnumerable<Chat> chats = await _chatsRepository.FindChatsWithNameAsync(chatName);
+            return chats.ToChatFirstViewCollection();
         }
 
         [HttpGet("UserChats")]

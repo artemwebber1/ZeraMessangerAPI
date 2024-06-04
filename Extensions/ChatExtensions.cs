@@ -15,5 +15,15 @@ namespace ZeraMessanger.Extensions
                 chat.ChatId,
                 chat.ChatName,
                 chat.Members.Count);
+
+        public static IEnumerable<ChatFirstView> ToChatFirstViewCollection(this IEnumerable<Chat> chats)
+        {
+            ICollection<ChatFirstView> chatFirstViews = [];
+
+            foreach (var chat in chats) 
+                chatFirstViews.Add(chat.ToChatFirstView());
+
+            return chatFirstViews;
+        }
     }
 }

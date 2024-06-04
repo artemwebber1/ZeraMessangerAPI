@@ -21,6 +21,17 @@ namespace ZeraMessanger.Services.Repositories.EfCoreRepositories
             return chat;
         }
 
+        public async Task<IEnumerable<Chat>> FindChatsWithNameAsync(string chatName)
+        {
+            using ZeraDbContext dbContext = new ZeraDbContext();
+
+            List<Chat> chats = await dbContext.Chats
+                .AsNoTracking()
+                .Where(chat => chat.ChatName.Contains(chatName)).ToListAsync();
+
+            return chats;
+        }
+
         public async Task<IEnumerable<ChatFirstView>> GetUserChatsAsync(int userId)
         {
             using ZeraDbContext dbContext = new ZeraDbContext();
@@ -32,15 +43,7 @@ namespace ZeraMessanger.Services.Repositories.EfCoreRepositories
                 .Where(c => c.Members.Any(u => u.UserId == userId))
                 .ToListAsync();
 
-            // Преобразуем чаты в DTO-модели
-            List<ChatFirstView> chatFirstViews = new List<ChatFirstView>();
-            for (int i = 0; i < chats.Count; i++)
-            {
-                ChatFirstView chatFirstView = chats[i].ToChatFirstView();
-                chatFirstViews.Add(chatFirstView);
-            }
-
-            return chatFirstViews;
+            return chats.ToChatFirstViewCollection();
         }
 
         public async Task<int> CreateChatAsync(string chatName, int creatorId)
@@ -76,7 +79,7 @@ namespace ZeraMessanger.Services.Repositories.EfCoreRepositories
             // Находим чат по id
             Chat? chat = await dbContext.Chats.FirstOrDefaultAsync(c => c.ChatId == chatId);
             // Находим пользователя по id
-            User? user = await dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            User? user = chat?.Members.FirstOrDefault(u => u.UserId == userId);
 
             // Пользователь или чат не существует - бросаем ошибку
             if (chat == null || user == null)

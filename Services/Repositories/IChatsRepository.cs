@@ -17,6 +17,13 @@ namespace ZeraMessanger.Services.Repositories
         Task<Chat?> GetByIdAsync(int chatId);
 
         /// <summary>
+        /// Находит чаты, содержащие в себе символы из <paramref name="chatName"/>.
+        /// </summary>
+        /// <param name="chatName">Название чата, который ищет пользователь.</param>
+        /// <returns>Список чатов, содержащих в себе символы из <paramref name="chatName"/>.</returns>
+        Task<IEnumerable<Chat>> FindChatsWithNameAsync(string chatName);
+
+        /// <summary>
         /// Получение чатов для конкретного пользователя.
         /// </summary>
         /// <param name="userId">Id пользователя, для которого нужно вернуть чаты.</param>
