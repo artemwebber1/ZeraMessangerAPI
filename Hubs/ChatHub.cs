@@ -17,12 +17,21 @@ namespace ZeraMessanger.Hubs
         private readonly IMessagesRepository _messagesRepository;
         private readonly IChatsRepository _chatsRepository;
 
-
-        public async Task ConnectUserToChat(string chatId)
+        /// <summary>
+        /// Подключение пользователя к чату (не добавление!).
+        /// </summary>
+        /// <param name="chatId">Id чата, к которому подключается пользователь.</param>
+        [HubMethodName("ConnectUserToChat")]
+        public async Task ConnectUserToChatAsync(string chatId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
         }
 
+        /// <summary>
+        /// Добавление пользователя в чат.
+        /// </summary>
+        /// <param name="userId">Id пользователя, который будет добавлен в чат.</param>
+        /// <param name="chatId">Id чата, в который будет добавлен пользователь.</param>
         [HubMethodName("AddUserToChat")]
         public async Task AddUserToChatAsync(int userId, int chatId)
         {
@@ -37,17 +46,31 @@ namespace ZeraMessanger.Hubs
             await Clients.Group(chatId.ToString()).SendAsync("OnUserJoinedChat", user.UserName);
         }
 
+        /// <summary>
+        /// Удаление пользователя из чата.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="chatId"></param>
+        /// <returns></returns>
         [HubMethodName("DeleteUserFromChat")]
         public async Task DeleteUserFromChatAsync(int userId, int chatId)
         {
-            // Удаление пользователя из чата и получение количества оставшихся участников
             int membersRemained = await _chatsRepository.DeleteUserFromChatAsync(userId, chatId);
 
+            // Сообщение о выходе пользователя из чата будет добавлено если в чате остались пользователи.
+            // Нет смысла отправлять сообщение, если некому будет на него смотреть
             if (membersRemained > 0)
                 await Clients.Group(chatId.ToString()).SendAsync("OnUserLeftChat");
         }
 
-        public async Task AddMessageToChat(string messageText, int chatId, int? authorId)
+        /// <summary>
+        /// Добавление сообщения в чат.
+        /// </summary>
+        /// <param name="messageText">Текст сообщения.</param>
+        /// <param name="chatId">Id чата, в который будет добавлено сообщение.</param>
+        /// <param name="authorId">Id автора сообщения.</param>
+        [HubMethodName("AddMessageToChat")]
+        public async Task AddMessageToChatAsync(string messageText, int chatId, int? authorId)
         {
             NewMessageData messageData = new NewMessageData(chatId, messageText);
 
