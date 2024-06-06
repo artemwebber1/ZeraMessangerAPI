@@ -2,7 +2,6 @@
 *.suo
 *.user
 _ReSharper.*
-LICENSE
 
 # Directories to ignore
 bin/

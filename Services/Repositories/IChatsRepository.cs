@@ -1,6 +1,6 @@
 ﻿using ZeraMessanger.Models;
 using ZeraMessanger.Models.Dto.ChatDto;
-using System.Data;
+
 
 namespace ZeraMessanger.Services.Repositories
 {
@@ -15,6 +15,13 @@ namespace ZeraMessanger.Services.Repositories
         /// <param name="chatId">Id чата, который нужно вернуть.</param>
         /// <returns>Чат с указанным <paramref name="chatId"/>.</returns>
         Task<Chat?> GetByIdAsync(int chatId);
+
+        /// <summary>
+        /// Находит чаты, содержащие в себе символы из <paramref name="chatName"/>.
+        /// </summary>
+        /// <param name="chatName">Название чата, который ищет пользователь.</param>
+        /// <returns>Список чатов, содержащих в себе символы из <paramref name="chatName"/>.</returns>
+        Task<IEnumerable<Chat>> FindChatsWithNameAsync(string chatName);
 
         /// <summary>
         /// Получение чатов для конкретного пользователя.
